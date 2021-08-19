@@ -3,4 +3,5 @@
     <string name="title_characters">Characters</string>
     <string name="title_locations">Locations</string>
     <string name="title_episodes">Episodes</string>
+    <string name="toast_no_data_loaded">No data loaded</string>
 </resources>

@@ -12,9 +12,9 @@ interface ApiInterface {
     @GET("character/")
     suspend fun getAllCharacters(): Response<ServerResponse<List<Character>>>
 
-    @GET("/location")
+    @GET("location/")
     suspend fun getAllLocations(): Response<ServerResponse<List<Location>>>
 
-    @GET("/episode")
+    @GET("episode/")
     suspend fun getAllEpisodes(): Response<ServerResponse<List<Episode>>>
 }

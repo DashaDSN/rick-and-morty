@@ -39,24 +39,12 @@ class CharactersFragment : Fragment() {
         charactersRecyclerView.layoutManager = GridLayoutManager(context, 2)
         charactersRecyclerView.adapter = charactersAdapter
         charactersViewModel.charactersLiveData.observe(viewLifecycleOwner) { response ->
-            if (response.isNullOrEmpty()) {
-                // TODO: show toast with error
+            if (response == null) {
+                Toast.makeText(context, getString(R.string.toast_no_data_loaded), Toast.LENGTH_SHORT).show()
             } else {
                 charactersAdapter.updateData(response)
             }
         }
-
-        /*charactersViewModel.errorMessage.observe(viewLifecycleOwner, {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-        })
-
-        charactersViewModel.loading.observe(viewLifecycleOwner, {
-            if (it) {
-                // TODO: show progress bar
-            } else {
-                // TODO: hide progress bar
-            }
-        })*/
     }
 
     companion object {
