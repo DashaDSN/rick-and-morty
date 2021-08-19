@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andersen.rickandmorty.R
 import com.andersen.rickandmorty.ui.characters.CharactersFragment
 import com.andersen.rickandmorty.ui.locations.recyclerview.EpisodesAdapter
+import com.andersen.rickandmorty.viewModel.EpisodesViewModel
 
 class EpisodesFragment : Fragment() {
 

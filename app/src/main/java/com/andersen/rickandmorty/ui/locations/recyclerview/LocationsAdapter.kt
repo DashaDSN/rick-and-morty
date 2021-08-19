@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.andersen.rickandmorty.R
-import com.andersen.rickandmorty.ui.locations.Location
+import com.andersen.rickandmorty.model.Location
 
 
 class LocationsAdapter(

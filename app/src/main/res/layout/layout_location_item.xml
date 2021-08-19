@@ -16,21 +16,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/large_text_size"
-            android:padding="@dimen/small_padding"
             tools:text="Name"/>
         <TextView
             android:id="@+id/tvType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            android:padding="@dimen/small_padding"
             tools:text="Type"/>
         <TextView
             android:id="@+id/tvDimension"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            android:padding="@dimen/small_padding"
             tools:text="Dimension"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

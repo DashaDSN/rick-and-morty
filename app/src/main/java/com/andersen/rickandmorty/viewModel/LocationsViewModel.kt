@@ -1,9 +1,9 @@
-package com.andersen.rickandmorty.ui.locations
+package com.andersen.rickandmorty.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.andersen.rickandmorty.ui.characters.Character
+import com.andersen.rickandmorty.model.Location
 import java.util.*
 
 class LocationsViewModel : ViewModel() {

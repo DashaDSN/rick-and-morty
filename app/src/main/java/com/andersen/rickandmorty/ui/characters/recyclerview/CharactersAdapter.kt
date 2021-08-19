@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.andersen.rickandmorty.R
-import com.andersen.rickandmorty.ui.characters.Character
+import com.andersen.rickandmorty.model.Character
 import com.bumptech.glide.Glide
 
 

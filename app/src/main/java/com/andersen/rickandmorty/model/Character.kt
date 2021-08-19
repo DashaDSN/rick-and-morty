@@ -1,4 +1,4 @@
-package com.andersen.rickandmorty.ui.characters
+package com.andersen.rickandmorty.model
 
 data class Character(
     val id: Int,
@@ -7,9 +7,13 @@ data class Character(
     val species: String,
     val type: String,
     val gender: String,
-    val origin: Int,
-    val location: Int,
+    val origin: ShortLocation,
+    val location: ShortLocation,
     val image: String,
-    val episodes: List<Int>,
+    val episodes: List<String>,
     val url: String,
     val created: String)
+
+data class ShortLocation (
+    val name: String,
+    val url: String)
