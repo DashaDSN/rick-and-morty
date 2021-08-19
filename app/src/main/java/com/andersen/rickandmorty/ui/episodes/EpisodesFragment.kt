@@ -49,6 +49,6 @@ class EpisodesFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = CharactersFragment()
+        fun newInstance() = EpisodesFragment()
     }
 }

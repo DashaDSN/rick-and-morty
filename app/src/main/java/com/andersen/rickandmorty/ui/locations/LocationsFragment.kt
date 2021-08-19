@@ -49,6 +49,6 @@ class LocationsFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = CharactersFragment()
+        fun newInstance() = LocationsFragment()
     }
 }
