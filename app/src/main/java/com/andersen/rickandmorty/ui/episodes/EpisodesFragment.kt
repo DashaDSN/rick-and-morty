@@ -11,8 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andersen.rickandmorty.R
-import com.andersen.rickandmorty.ui.characters.CharactersFragment
-import com.andersen.rickandmorty.ui.locations.recyclerview.EpisodesAdapter
+import com.andersen.rickandmorty.ui.characters.CharacterActivity
 import com.andersen.rickandmorty.viewModel.EpisodesViewModel
 
 class EpisodesFragment : Fragment() {
@@ -24,7 +23,8 @@ class EpisodesFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         episodesAdapter = EpisodesAdapter {
-            // TODO: add onCLickListener
+            val intent = EpisodeActivity.newIntent(context, it)
+            startActivity(intent)
         }
     }
 

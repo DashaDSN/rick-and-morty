@@ -1,4 +1,4 @@
-package com.andersen.rickandmorty.ui.locations.recyclerview
+package com.andersen.rickandmorty.ui.episodes
 
 import android.view.LayoutInflater
 import android.view.View

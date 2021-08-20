@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andersen.rickandmorty.R
-import com.andersen.rickandmorty.ui.characters.recyclerview.CharactersAdapter
 import com.andersen.rickandmorty.viewModel.CharactersViewModel
 
 class CharactersFragment : Fragment() {
@@ -23,7 +22,8 @@ class CharactersFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         charactersAdapter = CharactersAdapter {
-            // TODO: add onCLickListener
+            val intent = CharacterActivity.newIntent(context, it)
+            startActivity(intent)
         }
     }
 

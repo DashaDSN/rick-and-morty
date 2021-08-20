@@ -26,17 +26,17 @@
             android:textSize="@dimen/large_text_size"
             tools:text="Name"/>
         <TextView
-            android:id="@+id/tvSpecies"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/base_text_size"
-            tools:text="Species"/>
-        <TextView
             android:id="@+id/tvStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
             tools:text="Status"/>
+        <TextView
+            android:id="@+id/tvSpecies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/base_text_size"
+            tools:text="Species"/>
         <TextView
             android:id="@+id/tvGender"
             android:layout_width="match_parent"

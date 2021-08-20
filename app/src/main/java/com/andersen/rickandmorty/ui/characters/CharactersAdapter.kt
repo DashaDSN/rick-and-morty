@@ -1,4 +1,4 @@
-package com.andersen.rickandmorty.ui.characters.recyclerview
+package com.andersen.rickandmorty.ui.characters
 
 import android.view.LayoutInflater
 import android.view.View
