@@ -21,7 +21,7 @@ class EpisodeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_episode)
 
-        episode = intent.getParcelableExtra<Episode>(EPISODE_EXTRA)!!
+        episode = intent.getParcelableExtra(EPISODE_EXTRA)!!
 
         tvName = findViewById(R.id.tvName)
         tvEpisode = findViewById(R.id.tvEpisode)

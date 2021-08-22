@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andersen.rickandmorty.data.Repository
-import com.andersen.rickandmorty.model.Character
 import com.andersen.rickandmorty.model.Location
 import kotlinx.coroutines.launch
-import java.util.*
 
 class LocationsViewModel : ViewModel() {
 

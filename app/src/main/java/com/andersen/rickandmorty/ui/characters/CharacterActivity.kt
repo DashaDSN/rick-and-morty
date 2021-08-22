@@ -2,13 +2,13 @@ package com.andersen.rickandmorty.ui.characters
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.andersen.rickandmorty.R
-import com.andersen.rickandmorty.model.Character
 import com.bumptech.glide.Glide
+import com.andersen.rickandmorty.model.Character
 
 class CharacterActivity : AppCompatActivity() {
 
@@ -29,7 +29,7 @@ class CharacterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_character)
 
-        character = intent.getParcelableExtra<Character>(CHARACTER_EXTRA)!!
+        character = intent.getParcelableExtra(CHARACTER_EXTRA)!!
 
         ivImage = findViewById(R.id.ivImage)
         tvName = findViewById(R.id.tvName)

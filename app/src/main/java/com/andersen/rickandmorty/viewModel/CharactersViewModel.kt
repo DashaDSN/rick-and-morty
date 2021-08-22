@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.andersen.rickandmorty.data.Repository
 import com.andersen.rickandmorty.model.Character
 import kotlinx.coroutines.*
-import java.util.*
 
 class CharactersViewModel : ViewModel() {
 

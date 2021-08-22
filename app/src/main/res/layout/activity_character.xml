@@ -18,7 +18,7 @@
             android:layout_gravity="center"
             android:layout_margin="@dimen/small_margin"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_character_black_24dp" />
+            tools:src="@drawable/splash_screen_rick_and_morty" />
 
         <TextView
             android:id="@+id/tvName"

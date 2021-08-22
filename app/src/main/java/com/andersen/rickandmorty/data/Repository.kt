@@ -1,19 +1,9 @@
 package com.andersen.rickandmorty.data
 
-import android.util.EventLog
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.andersen.rickandmorty.api.ApiInterface
 import com.andersen.rickandmorty.api.ServiceBuilder
-import com.andersen.rickandmorty.api.ServiceBuilder.retrofit
 import com.andersen.rickandmorty.model.Character
 import com.andersen.rickandmorty.model.Episode
 import com.andersen.rickandmorty.model.Location
-import kotlinx.coroutines.CompletableJob
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 class Repository {
 
@@ -21,7 +11,21 @@ class Repository {
         val request = ServiceBuilder.apiClient.getAllCharacters()
 
         if (request.isSuccessful) {
-            return request.body()!!.results
+            return request.body()!!.results.map {
+                Character(
+                    it.id,
+                    it.name,
+                    it.status,
+                    it.species,
+                    it.type,
+                    it.gender,
+                    it.origin.name, // TODO: fix format
+                    it.location.name,
+                    it.image,
+                    it.episodes,
+                    it.url
+                )
+            }
         }
         return null
     }
@@ -30,7 +34,16 @@ class Repository {
         val request = ServiceBuilder.apiClient.getAllLocations()
 
         if (request.isSuccessful) {
-            return request.body()!!.results
+            return request.body()!!.results.map {
+                Location(
+                    it.id,
+                    it.name,
+                    it.type,
+                    it.dimension,
+                    it.residents,
+                    it.url
+                )
+            }
         }
         return null
     }
@@ -39,7 +52,16 @@ class Repository {
         val request = ServiceBuilder.apiClient.getAllEpisodes()
 
         if (request.isSuccessful) {
-            return request.body()!!.results
+            return request.body()!!.results.map {
+                Episode(
+                    it.id,
+                    it.name,
+                    it.air_date,
+                    it.episode,
+                    it.characters,
+                    it.url
+                )
+            }
         }
         return null
     }
