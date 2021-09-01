@@ -75,7 +75,6 @@ class CharactersAdapter(
         }
     }
 
-
     class CharactersDiffCallback(
         private var oldList: List<Character?>,
         private var newList: List<Character?>): DiffUtil.Callback() {

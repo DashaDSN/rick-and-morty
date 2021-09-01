@@ -14,8 +14,8 @@ interface ApiInterface {
     suspend fun getCharacters(@Query("page") page: Int): ServerResponse<Character>
 
     @GET("location/")
-    suspend fun getLocations(): Response<ServerResponse<Location>>
+    suspend fun getLocations(@Query("page") page: Int): ServerResponse<Location>
 
     @GET("episode/")
-    suspend fun getEpisodes(): Response<ServerResponse<Episode>>
+    suspend fun getEpisodes(@Query("page") page: Int): ServerResponse<Episode>
 }

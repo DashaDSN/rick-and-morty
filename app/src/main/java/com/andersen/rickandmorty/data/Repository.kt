@@ -15,147 +15,98 @@ class Repository(
     private val database: AppDatabase,
     private val retrofit: ApiInterface
 ): IRepository {
-    override var totalPages: Int = 0
+    override var totalCharacterPages: Int = 0
+    override var isCharactersLoadedFromDB = false
+    override var totalEpisodePages: Int = 0
+    override var isEpisodesLoadedFromDB: Boolean = false
+    override var totalLocationPages: Int = 0
+    override var isLocationsLoadedFromDB: Boolean = false
+
+    override fun isNetworkAvailable() = networkStateChecker.isNetworkAvailable()
 
     override fun getCharacters(page: Int): Flow<Result<List<Character>>> {
         return flow {
             emit(Result.Loading<List<Character>>())
             try {
                 val response = retrofit.getCharacters(page)
-                totalPages = response.info.pages
-                if (page > totalPages) emit(Result.Success(emptyList()))
+                totalCharacterPages = response.info.pages
                 database.getCharacterDao().deleteAll(response.results)
                 database.getCharacterDao().insertAll(response.results)
-                Log.d(TAG, "Page $page of $totalPages loaded successfully")
+                isCharactersLoadedFromDB = false
+                Log.d(TAG, "Page $page of $totalCharacterPages loaded successfully")
                 emit(Result.Success(response.results))
             } catch (throwable: Throwable) {
                 val result = getCharactersCached()
-                if (result is Result.Success && !result.data.isNullOrEmpty()) {
-                    Log.d(TAG, "${result.data!!.size} items loaded from DB")
+                if (!result.data.isNullOrEmpty()) {
+                    isCharactersLoadedFromDB = true
+                    Log.d(TAG, "${result.data!!.size} items loaded from database")
                     emit(result)
                 } else {
+                    isCharactersLoadedFromDB = false
                     Log.d(TAG, "Error loading data! ${throwable.message}")
                     emit(Result.Error<List<Character>>(throwable.message ?: ""))
                 }
             }
-
-            /*val response = retrofit.getCharacters(page)
-            Log.d(TAG, response.toString())
-            if (response.isSuccessful) {
-                Log.d(TAG, "Response is successful!")
-                totalPages = response.body()?.info?.pages ?: 0
-                response.body()?.results?.let { it ->
-                    database.getCharacterDao().deleteAll(it)
-                    database.getCharacterDao().insertAll(it)
-                    emit(Result.Success(it))
-                }
-            } else {
-                Log.d(TAG, "Characters loaded from DB")
-                emit(getCharactersCached())
-            }*/
-        }
-            .flowOn(Dispatchers.IO)
-            /*.catch { throwable ->
-                Log.d(TAG, "Error! ${throwable.message}")
-                emit(Result.Error(throwable.message ?: ""))
-            }*/
-    }
-
-
-
-    /*override suspend fun getLocations(): Flow<Result<List<Location>>> {
-        return flow {
-            emit(Result.loading<List<Location>>())
-            /*val result = retrofit.getLocations()
-
-            if (result.isSuccessful) {
-                result.body()?.results?.let { it ->
-                    database.getLocationDao().deleteAll(it)
-                    database.getLocationDao().insertAll(it)
-                    emit(Result.success(it))
-                }
-            } else {
-                //emit(getLocationsCached())
-                //emit(Result.error<List<Location>>("Error", Error()))
-            }*/
         }.flowOn(Dispatchers.IO)
-            //.onEmpty { emit(Result.error<List<Location>>("Error", Error())) }
-    }*/
+    }
 
-    /*override suspend fun getEpisodes(): Flow<Result<List<Episode>>> {
+    override fun getLocations(page: Int): Flow<Result<List<Location>>> {
         return flow {
-            //emit(getEpisodesCached())
-            emit(Result.loading<List<Episode>>())
-            val result = retrofit.getEpisodes()
-
-            /*if (result.isSuccessful) {
-                result.body()?.results?.let { it ->
-                    database.getEpisodeDao().deleteAll(it)
-                    database.getEpisodeDao().insertAll(it)
-                    emit(Result.success(it))
+            emit(Result.Loading<List<Location>>())
+            try {
+                val response = retrofit.getLocations(page)
+                totalLocationPages = response.info.pages
+                database.getLocationDao().deleteAll(response.results)
+                database.getLocationDao().insertAll(response.results)
+                isLocationsLoadedFromDB = false
+                Log.d(TAG, "Page $page of $totalLocationPages loaded successfully")
+                emit(Result.Success(response.results))
+            } catch (throwable: Throwable) {
+                val result = getLocationsCached()
+                if (!result.data.isNullOrEmpty()) {
+                    isLocationsLoadedFromDB = true
+                    Log.d(TAG, "${result.data!!.size} items loaded from database")
+                    emit(result)
+                } else {
+                    isLocationsLoadedFromDB = false
+                    Log.d(TAG, "Error loading data! ${throwable.message}")
+                    emit(Result.Error<List<Location>>(throwable.message ?: ""))
                 }
-            } else {
-                // TODO: extract string resource
-                //emit(Result.error<List<Episode>>("Error", Error()))
-            }*/
+            }
         }.flowOn(Dispatchers.IO)
-    }*/
-
-    private fun getCharactersCached(): Result<List<Character>> = database.getCharacterDao().getAll().let {
-        Result.Success(it)
     }
 
-    /*private fun getLocationsCached(): Result<List<Location>>? = database.getLocationDao().getAll()?.let {
-        Result.success(it)
+    override fun getEpisodes(page: Int): Flow<Result<List<Episode>>> {
+        return flow {
+            emit(Result.Loading<List<Episode>>())
+            try {
+                val response = retrofit.getEpisodes(page)
+                totalEpisodePages = response.info.pages
+                database.getEpisodeDao().deleteAll(response.results)
+                database.getEpisodeDao().insertAll(response.results)
+                isEpisodesLoadedFromDB = false
+                Log.d(TAG, "Page $page of $totalEpisodePages loaded successfully")
+                emit(Result.Success(response.results))
+            } catch (throwable: Throwable) {
+                val result = getEpisodesCached()
+                if (!result.data.isNullOrEmpty()) {
+                    isEpisodesLoadedFromDB = true
+                    Log.d(TAG, "${result.data!!.size} items loaded from database")
+                    emit(result)
+                } else {
+                    isEpisodesLoadedFromDB = false
+                    Log.d(TAG, "Error loading data! ${throwable.message}")
+                    emit(Result.Error<List<Episode>>(throwable.message ?: ""))
+                }
+            }
+        }.flowOn(Dispatchers.IO)
     }
 
-    private fun getEpisodesCached(): Result<List<Episode>>? = database.getEpisodeDao().getAll()?.let {
-        Result.success(it)
-    }*/
+    private fun getCharactersCached(): Result<List<Character>> = Result.Success(database.getCharacterDao().getAll())
 
-    /*fun getCharactersFromDataBase(): List<Character> {
-        return database.getCharacterDao().getAllCharacters().map {
-            Character(
-                it.id,
-                it.name,
-                it.status,
-                it.species,
-                it.type,
-                it.gender,
-                it.origin.name,
-                it.location.name,
-                it.image,
-                it.episodes,
-                it.url
-            )
-        }
-    }
+    private fun getLocationsCached(): Result<List<Location>> = Result.Success(database.getLocationDao().getAll())
 
-    fun getLocationsFromDatabase(): List<Location> {
-        return database.getLocationDao().getAllLocations().map {
-            Location(
-                it.id,
-                it.name,
-                it.type,
-                it.dimension,
-                it.residents,
-                it.url
-            )
-        }
-    }
-
-    fun getEpisodeFromDatabase(): List<Episode> {
-        return database.getEpisodeDao().getAllEpisodes().map {
-            Episode(
-                it.id,
-                it.name,
-                it.air_date,
-                it.episode,
-                it.characters,
-                it.url
-            )
-        }
-    }*/
+    private fun getEpisodesCached(): Result<List<Episode>> = Result.Success(database.getEpisodeDao().getAll())
 
     companion object {
         private const val TAG = "REPOSITORY"

@@ -7,7 +7,7 @@ import com.andersen.rickandmorty.model.local.CharacterRoom
 @Dao
 interface CharacterDao {
 
-    @Query("SELECT * FROM characters")
+    @Query("SELECT * FROM characters ORDER BY id")
     fun getAll(): List<Character>?
 
     @Delete

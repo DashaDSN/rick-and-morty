@@ -1,10 +1,13 @@
 <resources>
     <dimen name="base_card_corner_radius">5dp</dimen>
+
     <dimen name="base_text_size">12sp</dimen>
     <dimen name="large_text_size">16sp</dimen>
 
     <dimen name="base_margin">8dp</dimen>
-    <dimen name="small_padding">4dp</dimen>
-    <dimen name="base_padding">8dp</dimen>
     <dimen name="small_margin">4dp</dimen>
+
+    <dimen name="base_padding">8dp</dimen>
+    <dimen name="small_padding">4dp</dimen>
+
 </resources>

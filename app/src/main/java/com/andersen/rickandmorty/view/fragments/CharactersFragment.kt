@@ -15,7 +15,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.andersen.rickandmorty.R
 import com.andersen.rickandmorty.data.Repository
 import com.andersen.rickandmorty.data.local.getDatabase
-import com.andersen.rickandmorty.data.remote.ApiInterface
 import com.andersen.rickandmorty.data.remote.NetworkStateChecker
 import com.andersen.rickandmorty.data.remote.ServiceBuilder
 import com.andersen.rickandmorty.model.Character
@@ -61,11 +60,9 @@ class CharactersFragment : Fragment() {
 
         val networkStateChecker = NetworkStateChecker(requireContext())
         val database = getDatabase(requireContext())
-        val retrofit = ServiceBuilder.retrofit.create(ApiInterface::class.java)
+        val retrofit = ServiceBuilder.service
         val repository = Repository(networkStateChecker, database, retrofit)
-        charactersViewModel = ViewModelProvider(this, CharactersViewModel.FACTORY(repository)).get(
-            CharactersViewModel::class.java
-        )
+        charactersViewModel = ViewModelProvider(this, CharactersViewModel.FACTORY(repository)).get(CharactersViewModel::class.java)
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener {
@@ -84,10 +81,17 @@ class CharactersFragment : Fragment() {
                 is Result.Success<*> -> {
                     charactersAdapter.removeNullItem()
                     charactersAdapter.updateData(charactersAdapter.characters.plus(result.data as List<Character>))
+
+                    val newData = result.data as List<Character>
+                    if (newData.containsAll(charactersAdapter.characters)) {
+                        charactersAdapter.updateData(newData)
+                    } else {
+                        charactersAdapter.updateData(charactersAdapter.characters.plus(newData))
+                    }
                 }
                 is Result.Error<*> -> {
                     charactersAdapter.removeNullItem()
-                    showToast(getString(R.string.toast_no_data_loaded))
+                    showToast(getString(R.string.toast_no_data))
                 }
                 is Result.Loading<*> -> {
                     charactersAdapter.addNullItem()
@@ -116,7 +120,7 @@ class CharactersFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "CHARACTER_FRAGMENT"
+        private const val TAG = "CHARACTERS_FRAGMENT"
         fun newInstance() = CharactersFragment()
     }
 }

@@ -7,7 +7,7 @@ import com.andersen.rickandmorty.model.local.EpisodeRoom
 @Dao
 interface EpisodeDao {
 
-    @Query("SELECT * FROM episodes order by episode")
+    @Query("SELECT * FROM episodes ORDER BY id")
     fun getAll(): List<Episode>?
 
     @Delete

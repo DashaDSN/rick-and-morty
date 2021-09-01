@@ -18,6 +18,8 @@ import com.andersen.rickandmorty.data.local.getDatabase
 import com.andersen.rickandmorty.data.remote.ApiInterface
 import com.andersen.rickandmorty.data.remote.NetworkStateChecker
 import com.andersen.rickandmorty.data.remote.ServiceBuilder
+import com.andersen.rickandmorty.model.Character
+import com.andersen.rickandmorty.model.Episode
 import com.andersen.rickandmorty.model.Result
 import com.andersen.rickandmorty.view.adapters.EpisodesAdapter
 import com.andersen.rickandmorty.viewModel.EpisodesViewModel
@@ -27,7 +29,7 @@ class EpisodesFragment : Fragment() {
     private lateinit var episodesRecyclerView: RecyclerView
     private lateinit var episodesAdapter: EpisodesAdapter
     private lateinit var episodesViewModel: EpisodesViewModel
-    private lateinit var loading: ProgressBar
+    private lateinit var layoutManager: GridLayoutManager
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onAttach(context: Context) {
@@ -35,6 +37,12 @@ class EpisodesFragment : Fragment() {
         episodesAdapter = EpisodesAdapter {
             //val intent = EpisodeActivity.newIntent(context, it.id)
             //startActivity(intent)
+        }
+        layoutManager = GridLayoutManager(context, 2)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return episodesAdapter.getSpanSize(position)
+            }
         }
     }
 
@@ -48,50 +56,72 @@ class EpisodesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         episodesRecyclerView = view.findViewById(R.id.episodesRecyclerView)
-        episodesRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        episodesRecyclerView.layoutManager = layoutManager
         episodesRecyclerView.adapter = episodesAdapter
 
         val networkStateChecker = NetworkStateChecker(requireContext())
         val database = getDatabase(requireContext())
-        val retrofit = ServiceBuilder.retrofit.create(ApiInterface::class.java)
+        val retrofit = ServiceBuilder.service
         val repository = Repository(networkStateChecker, database, retrofit)
         episodesViewModel = ViewModelProvider(this, EpisodesViewModel.FACTORY(repository)).get(EpisodesViewModel::class.java)
 
-        //loading = view.findViewById(R.id.loading)
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener {
-            ///episodesViewModel.fetchEpisodes()
+            episodesViewModel.loadFirstPage()
             swipeRefreshLayout.isRefreshing = false
         }
 
-        //subscribeUi()
+        episodesRecyclerView.addOnScrollListener(onScrollListener)
+
+        subscribeUi()
     }
 
-    /*private fun subscribeUi() {
+    private fun subscribeUi() {
         episodesViewModel.episodesLiveData.observe(viewLifecycleOwner, { result ->
-            when (result.status) {
-                Result.Status.SUCCESS -> {
-                    result.data?.let { episodesAdapter.updateData(it) }
-                    loading.visibility = View.GONE
-                }
+            when (result) {
+                is Result.Success<*> -> {
+                    episodesAdapter.removeNullItem()
+                    episodesAdapter.updateData(episodesAdapter.episodes.plus(result.data as List<Episode>))
 
-                Result.Status.ERROR -> {
-                    showToast(getString(R.string.toast_no_data_loaded))
-                    loading.visibility = View.GONE
+                    val newData = result.data as List<Episode>
+                    if (newData.containsAll(episodesAdapter.episodes)) {
+                        episodesAdapter.updateData(newData)
+                    } else {
+                        episodesAdapter.updateData(episodesAdapter.episodes.plus(newData))
+                    }
                 }
-
-                Result.Status.LOADING -> {
-                    loading.visibility = View.VISIBLE
+                is Result.Error<*> -> {
+                    episodesAdapter.removeNullItem()
+                    showToast(getString(R.string.toast_no_data))
+                }
+                is Result.Loading<*> -> {
+                    episodesAdapter.addNullItem()
                 }
             }
         })
-    }*/
+    }
+
+    private val onScrollListener = object: RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val visibleItemCount: Int = layoutManager.childCount // amount of items on the screen
+            val totalItemCount: Int = layoutManager.itemCount // total amount of items
+            val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
+
+            if (!episodesAdapter.isLoading) {
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
+                    episodesViewModel.loadNextPage()
+                }
+            }
+        }
+    }
 
     private fun showToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
+        private const val TAG = "EPISODES_FRAGMENT"
         fun newInstance() = EpisodesFragment()
     }
 }

@@ -17,16 +17,14 @@ object ServiceBuilder {
         .addInterceptor(httpLoggingInterceptor)
         .build()
 
-    val retrofit: Retrofit = Retrofit.Builder()
+    private val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okHttpClient)
             .build()
 
-    private val service: ApiInterface by lazy {
+    val service: ApiInterface by lazy {
         retrofit.create(ApiInterface::class.java)
     }
-
-    val apiClient = ApiClient(service)
 }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,9 +14,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.andersen.rickandmorty.R
 import com.andersen.rickandmorty.data.Repository
 import com.andersen.rickandmorty.data.local.getDatabase
-import com.andersen.rickandmorty.data.remote.ApiInterface
 import com.andersen.rickandmorty.data.remote.NetworkStateChecker
 import com.andersen.rickandmorty.data.remote.ServiceBuilder
+import com.andersen.rickandmorty.model.Location
 import com.andersen.rickandmorty.model.Result
 import com.andersen.rickandmorty.view.adapters.LocationsAdapter
 import com.andersen.rickandmorty.viewModel.LocationsViewModel
@@ -27,7 +26,7 @@ class LocationsFragment : Fragment() {
     private lateinit var locationsRecyclerView: RecyclerView
     private lateinit var locationsAdapter: LocationsAdapter
     private lateinit var locationsViewModel: LocationsViewModel
-    private lateinit var loading: ProgressBar
+    private lateinit var layoutManager: GridLayoutManager
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onAttach(context: Context) {
@@ -35,6 +34,12 @@ class LocationsFragment : Fragment() {
         locationsAdapter = LocationsAdapter {
             //val intent = LocationActivity.newIntent(context, it.id)
             //startActivity(intent)
+        }
+        layoutManager = GridLayoutManager(context, 2)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return locationsAdapter.getSpanSize(position)
+            }
         }
     }
 
@@ -48,50 +53,72 @@ class LocationsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         locationsRecyclerView = view.findViewById(R.id.locationsRecyclerView)
-        locationsRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        locationsRecyclerView.layoutManager = layoutManager
         locationsRecyclerView.adapter = locationsAdapter
 
         val networkStateChecker = NetworkStateChecker(requireContext())
         val database = getDatabase(requireContext())
-        val retrofit = ServiceBuilder.retrofit.create(ApiInterface::class.java)
+        val retrofit = ServiceBuilder.service
         val repository = Repository(networkStateChecker, database, retrofit)
         locationsViewModel = ViewModelProvider(this, LocationsViewModel.FACTORY(repository)).get(LocationsViewModel::class.java)
 
-        //loading = view.findViewById(R.id.loading)
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener {
-            //locationsViewModel.fetchLocations()
+            locationsViewModel.loadFirstPage()
             swipeRefreshLayout.isRefreshing = false
         }
 
-        //subscribeUi()
+        locationsRecyclerView.addOnScrollListener(onScrollListener)
+
+        subscribeUi()
     }
 
-    /*private fun subscribeUi() {
+    private fun subscribeUi() {
         locationsViewModel.locationsLiveData.observe(viewLifecycleOwner, { result ->
-            when (result.status) {
-                Result.Status.SUCCESS -> {
-                    result.data?.let { locationsAdapter.updateData(it) }
-                    loading.visibility = View.GONE
-                }
+            when (result) {
+                is Result.Success<*> -> {
+                    locationsAdapter.removeNullItem()
+                    locationsAdapter.updateData(locationsAdapter.locations.plus(result.data as List<Location>))
 
-                Result.Status.ERROR -> {
-                    showToast(getString(R.string.toast_no_data_loaded))
-                    loading.visibility = View.GONE
+                    val newData = result.data as List<Location>
+                    if (newData.containsAll(locationsAdapter.locations)) {
+                        locationsAdapter.updateData(newData)
+                    } else {
+                        locationsAdapter.updateData(locationsAdapter.locations.plus(newData))
+                    }
                 }
-
-                Result.Status.LOADING -> {
-                    loading.visibility = View.VISIBLE
+                is Result.Error<*> -> {
+                    locationsAdapter.removeNullItem()
+                    showToast(getString(R.string.toast_no_data))
+                }
+                is Result.Loading<*> -> {
+                    locationsAdapter.addNullItem()
                 }
             }
         })
-    }*/
+    }
+
+    private val onScrollListener = object: RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val visibleItemCount: Int = layoutManager.childCount // amount of items on the screen
+            val totalItemCount: Int = layoutManager.itemCount // total amount of items
+            val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
+
+            if (!locationsAdapter.isLoading) {
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
+                    locationsViewModel.loadNextPage()
+                }
+            }
+        }
+    }
 
     private fun showToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
+        private const val TAG = "LOCATIONS_FRAGMENT"
         fun newInstance() = LocationsFragment()
     }
 }

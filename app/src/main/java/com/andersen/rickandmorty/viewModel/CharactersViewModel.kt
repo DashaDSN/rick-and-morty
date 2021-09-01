@@ -32,19 +32,11 @@ class CharactersViewModel(private val repository: IRepository) : ViewModel() {
     }
 
     fun loadNextPage() {
-        Log.d(TAG, "loadNextPage: $page of ${repository.totalPages}")
-        if (page < repository.totalPages) {
+        Log.d(TAG, "loadNextPage: $page of ${repository.totalCharacterPages}")
+        if (page < repository.totalCharacterPages && (repository.isNetworkAvailable() || !repository.isCharactersLoadedFromDB)) {
             viewModelScope.launch {
                 repository.getCharacters(page++).collect {
                     if (it is Error) page--
-                    /*if (it is Result.Success<List<Character>>) {
-                        var list = emptyList<Character>()
-                        if (!charactersLiveData.value?.data.isNullOrEmpty()) {
-                            list = charactersLiveData.value!!.data!!.toMutableList()
-                        }
-                        it.data = list + it.data!!
-                        Log.d(TAG, "List size is ${it.data!!.size}")
-                    }*/
                     _charactersLiveData.value = it
                 }
             }

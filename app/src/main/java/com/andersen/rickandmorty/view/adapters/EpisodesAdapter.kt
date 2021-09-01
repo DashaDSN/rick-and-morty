@@ -8,29 +8,47 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.andersen.rickandmorty.R
 import com.andersen.rickandmorty.model.Episode
-import com.andersen.rickandmorty.model.EpisodeDetail
-import com.andersen.rickandmorty.view.TextViewWithLabel
-
 
 class EpisodesAdapter(
     private val onCLick: (Episode) -> Unit
-) : RecyclerView.Adapter<EpisodesAdapter.EpisodeViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var episodes = arrayListOf<Episode>()
+    var episodes = arrayListOf<Episode?>()
+        private set
+    var isLoading = false
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_episode_item, parent, false)
-        return EpisodeViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == VIEW_TYPE_ITEM) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_episode_item, parent, false)
+            EpisodeViewHolder(view)
+        } else {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_progress_bar, parent, false)
+            LoadingViewHolder(view)
+        }
     }
 
-    override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
-        holder.bind(episodes[position])
-        holder.itemView.setOnClickListener{ onCLick(episodes[position]) }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is EpisodeViewHolder) {
+            holder.bind(episodes[position]!!)
+            holder.itemView.setOnClickListener { onCLick(episodes[position]!!) }
+        }
     }
 
     override fun getItemCount(): Int = episodes.size
 
-    fun updateData(data: List<Episode>) {
+    override fun getItemViewType(position: Int): Int {
+        return if (episodes[position] != null) {
+            VIEW_TYPE_ITEM
+        } else {
+            VIEW_TYPE_LOADING
+        }
+    }
+
+    fun getSpanSize(position: Int): Int {
+        return if (episodes[position] == null) 2 else 1
+    }
+
+    fun updateData(data: List<Episode?>) {
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
             EpisodesDiffCallback(episodes, data)
         )
@@ -39,12 +57,28 @@ class EpisodesAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
+    fun addNullItem() {
+        isLoading = true
+        episodes.add(null)
+        notifyItemInserted(episodes.size - 1)
+    }
+
+    fun removeNullItem() {
+        if (isLoading) {
+            isLoading = false
+            if (episodes.last() == null) {
+                episodes.removeLast()
+                notifyItemRemoved(episodes.size)
+            }
+        }
+    }
+
     class EpisodesDiffCallback(
-        private var oldList: List<Episode>,
-        private var newList: List<Episode>): DiffUtil.Callback() {
+        private var oldList: List<Episode?>,
+        private var newList: List<Episode?>): DiffUtil.Callback() {
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id == newList[newItemPosition].id
+            return oldList[oldItemPosition]?.id == newList[newItemPosition]?.id
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -66,5 +100,12 @@ class EpisodesAdapter(
             tvEpisode.text = episode.episode
             tvAirDate.text = episode.air_date
         }
+    }
+
+    class LoadingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+
+    companion object {
+        private const val VIEW_TYPE_ITEM = 1
+        private const val VIEW_TYPE_LOADING = 2
     }
 }

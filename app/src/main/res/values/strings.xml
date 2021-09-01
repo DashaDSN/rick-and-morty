@@ -1,22 +1,31 @@
 <resources>
+    <!-- TITLES -->
     <string name="app_name">Rick and Morty</string>
     <string name="title_characters">Characters</string>
     <string name="title_locations">Locations</string>
     <string name="title_episodes">Episodes</string>
-    <string name="toast_no_data_loaded">No data loaded</string>
-    <string name="character_image">character image</string>
+
+    <!-- INFO -->
+    <string name="toast_no_data">No data</string>
     <string name="label">label</string>
+
+    <!-- CHARACTER -->
     <string name="character_status">Status</string>
     <string name="character_species">Species</string>
     <string name="character_gender">Gender</string>
-    <string name="episode">Episode</string>
-    <string name="episode_air_date">Air date</string>
-    <string name="location_type">Type</string>
-    <string name="location_dimension">Dimension</string>
+    <string name="character_image">character image</string>
     <string name="character_type">Type</string>
     <string name="character_origin">Origin</string>
     <string name="character_location">Location</string>
     <string name="character_episodes">Episodes</string>
+
+    <!-- EPISODE -->
+    <string name="episode">Episode</string>
+    <string name="episode_air_date">Air date</string>
     <string name="episode_status">Status</string>
+
+    <!-- LOCATION -->
+    <string name="location_type">Type</string>
+    <string name="location_dimension">Dimension</string>
     <string name="location_residents">Residents</string>
 </resources>

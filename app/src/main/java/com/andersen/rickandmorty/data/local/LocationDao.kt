@@ -8,7 +8,7 @@ import com.andersen.rickandmorty.model.local.LocationRoom
 @Dao
 interface LocationDao {
 
-    @Query("SELECT * FROM locations")
+    @Query("SELECT * FROM locations ORDER BY id")
     fun getAll(): List<Location>?
 
     @Delete
