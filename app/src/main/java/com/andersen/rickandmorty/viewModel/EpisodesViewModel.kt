@@ -1,28 +1,33 @@
 package com.andersen.rickandmorty.viewModel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andersen.rickandmorty.data.Repository
+import com.andersen.rickandmorty.data.IRepository
 import com.andersen.rickandmorty.model.Episode
+import com.andersen.rickandmorty.model.Result
+import com.andersen.rickandmorty.util.viewModelFactory
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class EpisodesViewModel : ViewModel() {
+class EpisodesViewModel(private val repository: IRepository) : ViewModel() {
 
-    private val _episodesLiveData =  MutableLiveData<MutableList<Episode>>()
-    val episodesLiveData: LiveData<MutableList<Episode>> = _episodesLiveData
-
-    private val repository = Repository()
+    private val _episodesLiveData =  MutableLiveData<Result<List<Episode>>>()
+    val episodesLiveData = _episodesLiveData
 
     init {
-        getAllEpisodes()
+        //fetchEpisodes()
     }
 
-    private fun getAllEpisodes() {
+    /*fun fetchEpisodes() {
         viewModelScope.launch {
-            val response = repository.getAllEpisodes()
-            _episodesLiveData.postValue(response as MutableList<Episode>?)
+            repository.getEpisodes().collect {
+                _episodesLiveData.value = it
+            }
         }
+    }*/
+
+    companion object {
+        val FACTORY = viewModelFactory(::EpisodesViewModel)
     }
 }

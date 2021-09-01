@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -13,12 +12,14 @@
 
         <ImageView
             android:id="@+id/ivImage"
-            android:layout_width="@dimen/base_image_size"
-            android:layout_height="@dimen/base_image_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:layout_gravity="center"
             android:layout_margin="@dimen/small_margin"
             android:scaleType="centerCrop"
-            tools:src="@drawable/splash_screen_rick_and_morty" />
+            tools:src="@drawable/splash_screen_rick_and_morty"
+            android:contentDescription="@string/character_image" />
 
         <TextView
             android:id="@+id/tvName"
@@ -27,53 +28,60 @@
             android:textSize="@dimen/large_text_size"
             tools:text="Name" />
 
-        <TextView
+        <com.andersen.rickandmorty.view.TextViewWithLabel
             android:id="@+id/tvStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            tools:text="Status" />
+            app:label="@string/character_status"
+            tools:text="@string/character_status" />
 
-        <TextView
+        <com.andersen.rickandmorty.view.TextViewWithLabel
             android:id="@+id/tvSpecies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            tools:text="Species" />
+            app:label="@string/character_species"
+            tools:text="@string/character_species" />
 
-        <TextView
+        <com.andersen.rickandmorty.view.TextViewWithLabel
             android:id="@+id/tvType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            tools:text="Type" />
+            app:label="@string/character_type"
+            tools:text="@string/character_type" />
 
-        <TextView
+        <com.andersen.rickandmorty.view.TextViewWithLabel
             android:id="@+id/tvGender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            tools:text="Gender" />
+            app:label="@string/character_gender"
+            tools:text="@string/character_gender" />
 
-        <TextView
+        <com.andersen.rickandmorty.view.TextViewWithLabel
             android:id="@+id/tvOrigin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            tools:text="Origin" />
+            app:label="@string/character_origin"
+            tools:text="@string/character_origin" />
 
-        <TextView
+        <com.andersen.rickandmorty.view.TextViewWithLabel
             android:id="@+id/tvLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            tools:text="Location" />
+            app:label="@string/character_location"
+            tools:text="@string/character_location" />
 
-        <TextView
+        <com.andersen.rickandmorty.view.TextViewWithLabel
             android:id="@+id/tvEpisodes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            tools:text="Episodes" />
+            app:label="@string/character_episodes"
+            tools:text="@string/character_episodes" />
     </LinearLayout>
 </ScrollView>

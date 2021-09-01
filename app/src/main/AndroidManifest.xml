@@ -3,6 +3,7 @@
     package="com.andersen.rickandmorty">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,24 +12,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RickAndMorty">
-        <activity android:name=".ui.SplashScreenActivity"></activity>
-        <activity
-            android:name=".ui.locations.LocationActivity"
-            android:parentActivityName=".ui.MainActivity" />
-        <activity
-            android:name=".ui.episodes.EpisodeActivity"
-            android:parentActivityName=".ui.MainActivity" />
-        <activity
-            android:name=".ui.characters.CharacterActivity"
-            android:parentActivityName=".ui.MainActivity" />
-        <activity
-            android:name=".ui.MainActivity"
-            android:label="@string/app_name">
+        <activity android:name=".view.activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.activities.LocationActivity"
+            android:parentActivityName=".view.activities.MainActivity" />
+        <activity
+            android:name=".view.activities.EpisodeActivity"
+            android:parentActivityName=".view.activities.MainActivity" />
+        <activity
+            android:name=".view.activities.CharacterActivity"
+            android:parentActivityName=".view.activities.MainActivity" />
+        <activity
+            android:name=".view.activities.MainActivity"
+            android:label="@string/app_name">
         </activity>
     </application>
 

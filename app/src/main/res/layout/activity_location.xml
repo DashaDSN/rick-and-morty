@@ -18,25 +18,28 @@
             android:textSize="@dimen/large_text_size"
             tools:text="Name" />
 
-        <TextView
+        <com.andersen.rickandmorty.view.TextViewWithLabel
             android:id="@+id/tvType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            tools:text="Type" />
+            app:label="@string/location_type"
+            tools:text="@string/location_type" />
 
-        <TextView
+        <com.andersen.rickandmorty.view.TextViewWithLabel
             android:id="@+id/tvDimension"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            tools:text="Dimension" />
+            app:label="@string/location_dimension"
+            tools:text="@string/location_dimension" />
 
-        <TextView
+        <com.andersen.rickandmorty.view.TextViewWithLabel
             android:id="@+id/tvResidents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            tools:text="Residents" />
+            app:label="@string/location_residents"
+            tools:text="@string/location_residents" />
     </LinearLayout>
 </ScrollView>

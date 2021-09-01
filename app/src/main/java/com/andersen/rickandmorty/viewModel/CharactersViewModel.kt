@@ -1,28 +1,58 @@
 package com.andersen.rickandmorty.viewModel
 
-import androidx.lifecycle.LiveData
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andersen.rickandmorty.data.Repository
+import com.andersen.rickandmorty.data.IRepository
 import com.andersen.rickandmorty.model.Character
+import com.andersen.rickandmorty.model.Result
+import com.andersen.rickandmorty.util.viewModelFactory
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 
-class CharactersViewModel : ViewModel() {
+class CharactersViewModel(private val repository: IRepository) : ViewModel() {
+    private var page = 1
 
-    private val _charactersLiveData =  MutableLiveData<MutableList<Character>>()
-    val charactersLiveData: LiveData<MutableList<Character>> = _charactersLiveData
-
-    private val repository = Repository()
+    private val _charactersLiveData =  MutableLiveData<Result<List<Character>>>()
+    val charactersLiveData = _charactersLiveData
 
     init {
-        getAllCharacters()
+        loadFirstPage()
     }
 
-    private fun getAllCharacters() {
+    fun loadFirstPage() {
         viewModelScope.launch {
-            val response = repository.getAllCharacters()
-            _charactersLiveData.postValue(response as MutableList<Character>?)
+            page = 1
+            repository.getCharacters(page++).collect {
+                if (it is Error) page--
+                _charactersLiveData.value = it
+            }
         }
+    }
+
+    fun loadNextPage() {
+        Log.d(TAG, "loadNextPage: $page of ${repository.totalPages}")
+        if (page < repository.totalPages) {
+            viewModelScope.launch {
+                repository.getCharacters(page++).collect {
+                    if (it is Error) page--
+                    /*if (it is Result.Success<List<Character>>) {
+                        var list = emptyList<Character>()
+                        if (!charactersLiveData.value?.data.isNullOrEmpty()) {
+                            list = charactersLiveData.value!!.data!!.toMutableList()
+                        }
+                        it.data = list + it.data!!
+                        Log.d(TAG, "List size is ${it.data!!.size}")
+                    }*/
+                    _charactersLiveData.value = it
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val TAG = "CHARACTERS_VIEW_MODEL"
+        val FACTORY = viewModelFactory(::CharactersViewModel)
     }
 }
