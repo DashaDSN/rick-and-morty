@@ -12,11 +12,7 @@ import com.andersen.rickandmorty.model.Location
 
 class LocationsAdapter(
     private val onCLick: (Location) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    var locations = arrayListOf<Location?>()
-        private set
-    var isLoading = false
+) : BaseAdapter<Location>(onCLick) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ITEM) {
@@ -30,48 +26,18 @@ class LocationsAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is LocationViewHolder) {
-            holder.bind(locations[position]!!)
-            holder.itemView.setOnClickListener { onCLick(locations[position]!!) }
+            holder.bind(items[position]!!)
+            holder.itemView.setOnClickListener { onCLick(items[position]!!) }
         }
     }
 
-    override fun getItemCount(): Int = locations.size
-
-    override fun getItemViewType(position: Int): Int {
-        return if (locations[position] != null) {
-            VIEW_TYPE_ITEM
-        } else {
-            VIEW_TYPE_LOADING
-        }
-    }
-
-    fun getSpanSize(position: Int): Int {
-        return if (locations[position] == null) 2 else 1
-    }
-
-    fun updateData(data: List<Location?>) {
+    override fun updateData(data: List<Location?>) {
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
-            LocationsDiffCallback(locations, data)
+            LocationsDiffCallback(items, data)
         )
-        locations.clear()
-        locations.addAll(data)
+        items.clear()
+        items.addAll(data)
         diffResult.dispatchUpdatesTo(this)
-    }
-
-    fun addNullItem() {
-        isLoading = true
-        locations.add(null)
-        notifyItemInserted(locations.size - 1)
-    }
-
-    fun removeNullItem() {
-        if (isLoading) {
-            isLoading = false
-            if (locations.last() == null) {
-                locations.removeLast()
-                notifyItemRemoved(locations.size)
-            }
-        }
     }
 
     class LocationsDiffCallback(
@@ -101,12 +67,5 @@ class LocationsAdapter(
             tvType.text = location.type
             tvDimension.text = location.dimension
         }
-    }
-
-    class LoadingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
-
-    companion object {
-        private const val VIEW_TYPE_ITEM = 1
-        private const val VIEW_TYPE_LOADING = 2
     }
 }

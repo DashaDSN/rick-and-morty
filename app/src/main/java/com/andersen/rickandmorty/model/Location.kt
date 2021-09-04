@@ -2,10 +2,16 @@ package com.andersen.rickandmorty.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "locations")
 data class Location(
-    @PrimaryKey val id: Int,
+    @PrimaryKey
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("name")
     val name: String,
+    @SerializedName("type")
     val type: String,
+    @SerializedName("dimension")
     val dimension: String)

@@ -1,8 +1,9 @@
 package com.andersen.rickandmorty.data.local
 
 import androidx.room.*
+import com.andersen.rickandmorty.model.CharacterDetail
 import com.andersen.rickandmorty.model.Episode
-import com.andersen.rickandmorty.model.local.EpisodeRoom
+import com.andersen.rickandmorty.model.EpisodeDetail
 
 @Dao
 interface EpisodeDao {
@@ -11,8 +12,17 @@ interface EpisodeDao {
     fun getAll(): List<Episode>?
 
     @Delete
-    fun deleteAll(episodes: List<Episode>)
+    fun deleteItems(items: List<Episode>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(episodes: List<Episode>)
+    fun insertItems(items: List<Episode>)
+
+    @Query("SELECT * FROM episode_details WHERE id = :id")
+    fun getItemById(id: Int): EpisodeDetail
+
+    @Delete
+    fun deleteDetailItem(items: EpisodeDetail)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertDetailItem(item: EpisodeDetail)
 }

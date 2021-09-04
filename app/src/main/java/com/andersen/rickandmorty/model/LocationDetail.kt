@@ -1,46 +1,33 @@
 package com.andersen.rickandmorty.model
 
-import android.os.Parcel
-import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.andersen.rickandmorty.util.ItemsConverter
+import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "location_details")
 data class LocationDetail(
+    @PrimaryKey
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("name")
     val name: String,
+    @SerializedName("type")
     val type: String,
+    @SerializedName("dimension")
     val dimension: String,
+    @SerializedName("residents")
+    @TypeConverters(ItemsConverter::class)
     val residents: List<String>,
+    @SerializedName("url")
     val url: String
-    ): Parcelable {
-
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString() ?: "",
-        parcel.readString() ?: "",
-        parcel.readString() ?: "",
-        parcel.createStringArrayList() ?: emptyList(),
-        parcel.readString() ?: ""
-    )
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
-        parcel.writeString(name)
-        parcel.writeString(type)
-        parcel.writeString(dimension)
-        parcel.writeStringList(residents)
-        parcel.writeString(url)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<LocationDetail> {
-        override fun createFromParcel(parcel: Parcel): LocationDetail {
-            return LocationDetail(parcel)
+) {
+    fun getResidentsId(): String {
+        var str = ""
+        residents.map {
+            str = str.plus(", ${it.substringAfterLast("/")}")
         }
-
-        override fun newArray(size: Int): Array<LocationDetail?> {
-            return arrayOfNulls(size)
-        }
+        return str
     }
 }

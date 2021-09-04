@@ -2,62 +2,51 @@ package com.andersen.rickandmorty.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.*
+import com.andersen.rickandmorty.util.ItemsConverter
+import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "character_details")
 data class CharacterDetail(
+    @PrimaryKey
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("name")
     val name: String,
+    @SerializedName("status")
     val status: String,
+    @SerializedName("species")
     val species: String?,
-    val type: String,
+    @SerializedName("type")
+    val type: String?,
+    @SerializedName("gender")
     val gender: String,
-    val origin: String,
-    val location: String,
+    @SerializedName("origin")
+    @Embedded(prefix = "origin_")
+    val origin: ShortLocation,
+    @SerializedName("location")
+    @Embedded(prefix = "location_")
+    val location: ShortLocation,
+    @SerializedName("image")
     val image: String?,
+    @SerializedName("episodes")
+    @TypeConverters(ItemsConverter::class)
     val episodes: List<String>,
-    val url: String): Parcelable {
+    @SerializedName("url")
+    val url: String) {
 
-    constructor(parcel: Parcel) : this(
-        id = parcel.readInt(),
-        name = parcel.readString() ?: "",
-        status = parcel.readString() ?: "",
-        species = parcel.readString() ?: "",
-        type = parcel.readString() ?: "",
-        gender = parcel.readString() ?: "",
-        origin = parcel.readString() ?: "",
-        location = parcel.readString() ?: "",
-        image = parcel.readString() ?: "",
-        episodes = parcel.createStringArrayList() ?: emptyList(),
-        url = parcel.readString() ?: ""
+    data class ShortLocation(
+        @SerializedName("name")
+        val name: String,
+        @SerializedName("url")
+        val url: String
     )
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
-        parcel.writeString(name)
-        parcel.writeString(status)
-        parcel.writeString(species)
-        parcel.writeString(type)
-        parcel.writeString(gender)
-        parcel.writeString(origin)
-        parcel.writeString(location)
-        parcel.writeString(image)
-        parcel.writeStringList(episodes)
-        parcel.writeString(url)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<CharacterDetail> {
-        override fun createFromParcel(parcel: Parcel): CharacterDetail {
-            return CharacterDetail(parcel)
+    fun getEpisodesId(): String {
+        var str = ""
+        episodes.map {
+            str = str.plus(", ${it.substringAfterLast("/")}")
         }
-
-        override fun newArray(size: Int): Array<CharacterDetail?> {
-            return arrayOfNulls(size)
-        }
+        return str
     }
-
-
-
 }

@@ -1,4 +1,4 @@
-package com.andersen.rickandmorty.model.remote
+package com.andersen.rickandmorty.model
 
 // model contains list of T in results field
 data class ServerResponse<T> (

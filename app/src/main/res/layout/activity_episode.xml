@@ -4,16 +4,20 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/base_padding">
+        android:padding="@dimen/large_padding">
 
         <TextView
             android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/large_margin"
+            android:gravity="center"
+            android:textStyle="bold"
             android:textSize="@dimen/large_text_size"
             tools:text="Name" />
 
@@ -33,12 +37,21 @@
             app:label="@string/episode_air_date"
             tools:text="@string/episode_air_date" />
 
-        <com.andersen.rickandmorty.view.TextViewWithLabel
+        <TextView
             android:id="@+id/tvCharacters"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            app:label="@string/episode_status"
-            tools:text="@string/episode_status" />
+            android:textStyle="italic"
+            android:text="@string/episode_characters" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCharacters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/base_text_size"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:spanCount="2"
+            tools:listitem="@layout/layout_character_item"/>
     </LinearLayout>
 </ScrollView>

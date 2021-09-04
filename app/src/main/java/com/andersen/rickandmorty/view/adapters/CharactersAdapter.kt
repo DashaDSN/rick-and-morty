@@ -13,11 +13,7 @@ import com.bumptech.glide.Glide
 
 class CharactersAdapter(
     private val onCLick: (Character) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    var characters = arrayListOf<Character?>()
-        private set
-    var isLoading = false
+) : BaseAdapter<Character>(onCLick) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ITEM) {
@@ -31,48 +27,18 @@ class CharactersAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is CharacterViewHolder) {
-            holder.bind(characters[position]!!)
-            holder.itemView.setOnClickListener { onCLick(characters[position]!!) }
+            holder.bind(items[position]!!)
+            holder.itemView.setOnClickListener { onCLick(items[position]!!) }
         }
     }
 
-    override fun getItemCount(): Int = characters.size
-
-    override fun getItemViewType(position: Int): Int {
-        return if (characters[position] != null) {
-            VIEW_TYPE_ITEM
-        } else {
-            VIEW_TYPE_LOADING
-        }
-    }
-
-    fun getSpanSize(position: Int): Int {
-        return if (characters[position] == null) 2 else 1
-    }
-
-    fun updateData(data: List<Character?>) {
+    override fun updateData(data: List<Character?>) {
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
-            CharactersDiffCallback(characters, data)
+            CharactersDiffCallback(items, data)
         )
-        characters.clear()
-        characters.addAll(data)
+        items.clear()
+        items.addAll(data)
         diffResult.dispatchUpdatesTo(this)
-    }
-
-    fun addNullItem() {
-        isLoading = true
-        characters.add(null)
-        notifyItemInserted(characters.size - 1)
-    }
-
-    fun removeNullItem() {
-        if (isLoading) {
-            isLoading = false
-            if (characters.last() == null) {
-                characters.removeLast()
-                notifyItemRemoved(characters.size)
-            }
-        }
     }
 
     class CharactersDiffCallback(
@@ -92,29 +58,22 @@ class CharactersAdapter(
         override fun getOldListSize(): Int = oldList.size
     }
 
-    class CharacterViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class CharacterViewHolder(itemView: View): ItemViewHolder<Character>(itemView) {
         private val tvName = itemView.findViewById<TextView>(R.id.tvName)
         private val tvSpecies = itemView.findViewById<TextView>(R.id.tvSpecies)
         private val tvStatus = itemView.findViewById<TextView>(R.id.tvStatus)
         private val tvGender = itemView.findViewById<TextView>(R.id.tvGender)
         private val ivImage = itemView.findViewById<ImageView>(R.id.ivImage)
 
-        fun bind(character: Character) {
-            tvName.text = character.name
-            tvSpecies.text = character.species
-            tvStatus.text = character.status
-            tvGender.text = character.gender
+        override fun bind(item: Character) {
+            tvName.text = item.name
+            tvSpecies.text = item.species
+            tvStatus.text = item.status
+            tvGender.text = item.gender
             Glide.with(itemView)
-                .load(character.image)
+                .load(item.image)
                 .placeholder(R.drawable.ic_character_black_24dp)
                 .into(ivImage)
         }
-    }
-
-    class LoadingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
-
-    companion object {
-        private const val VIEW_TYPE_ITEM = 1
-        private const val VIEW_TYPE_LOADING = 2
     }
 }

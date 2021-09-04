@@ -10,22 +10,24 @@
     <string name="label">label</string>
 
     <!-- CHARACTER -->
-    <string name="character_status">Status</string>
-    <string name="character_species">Species</string>
-    <string name="character_gender">Gender</string>
+    <string name="character_status">Status:</string>
+    <string name="character_species">Species:</string>
+    <string name="character_gender">Gender:</string>
     <string name="character_image">character image</string>
-    <string name="character_type">Type</string>
-    <string name="character_origin">Origin</string>
-    <string name="character_location">Location</string>
-    <string name="character_episodes">Episodes</string>
+    <string name="character_type">Type:</string>
+    <string name="character_origin">Origin:</string>
+    <string name="character_location">Location:</string>
+    <string name="character_episodes">Episodes:</string>
 
     <!-- EPISODE -->
-    <string name="episode">Episode</string>
-    <string name="episode_air_date">Air date</string>
-    <string name="episode_status">Status</string>
+    <string name="episode">Episode:</string>
+    <string name="episode_air_date">Air date:</string>
+    <string name="episode_characters">Characters:</string>
 
     <!-- LOCATION -->
-    <string name="location_type">Type</string>
-    <string name="location_dimension">Dimension</string>
-    <string name="location_residents">Residents</string>
+    <string name="location_type">Type:</string>
+    <string name="location_dimension">Dimension:</string>
+    <string name="location_residents">Residents:</string>
+
+    <string name="btn_search">Search</string>
 </resources>

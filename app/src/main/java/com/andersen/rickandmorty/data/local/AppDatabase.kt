@@ -4,11 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.andersen.rickandmorty.model.Character
-import com.andersen.rickandmorty.model.Episode
-import com.andersen.rickandmorty.model.Location
+import androidx.room.TypeConverters
+import com.andersen.rickandmorty.model.*
+import com.andersen.rickandmorty.util.ItemsConverter
 
-@Database(entities = [Character::class, Location::class, Episode::class], version = 1)
+@Database(entities = [Character::class, Location::class, Episode::class, CharacterDetail::class, LocationDetail::class, EpisodeDetail::class], version = 1)
+@TypeConverters(ItemsConverter::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun getCharacterDao(): CharacterDao
     abstract fun getLocationDao(): LocationDao

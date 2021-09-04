@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/base_padding">
+        android:padding="@dimen/large_padding">
 
         <ImageView
             android:id="@+id/ivImage"
@@ -25,6 +26,10 @@
             android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginBottom="@dimen/large_margin"
+            android:gravity="center"
+            android:textStyle="bold"
             android:textSize="@dimen/large_text_size"
             tools:text="Name" />
 
@@ -32,7 +37,7 @@
             android:id="@+id/tvStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/base_text_size"
+            android:textSize="@dimen/small_text_size"
             app:label="@string/character_status"
             tools:text="@string/character_status" />
 
@@ -76,12 +81,21 @@
             app:label="@string/character_location"
             tools:text="@string/character_location" />
 
-        <com.andersen.rickandmorty.view.TextViewWithLabel
+        <TextView
             android:id="@+id/tvEpisodes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/base_text_size"
-            app:label="@string/character_episodes"
-            tools:text="@string/character_episodes" />
+            android:textStyle="italic"
+            android:text="@string/character_episodes" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvEpisodes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/base_text_size"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:spanCount="2"
+            tools:listitem="@layout/layout_episode_item"/>
     </LinearLayout>
 </ScrollView>

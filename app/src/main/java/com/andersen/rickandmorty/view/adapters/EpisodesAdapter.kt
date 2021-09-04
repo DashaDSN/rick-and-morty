@@ -11,11 +11,7 @@ import com.andersen.rickandmorty.model.Episode
 
 class EpisodesAdapter(
     private val onCLick: (Episode) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    var episodes = arrayListOf<Episode?>()
-        private set
-    var isLoading = false
+) : BaseAdapter<Episode>(onCLick) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ITEM) {
@@ -29,48 +25,18 @@ class EpisodesAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is EpisodeViewHolder) {
-            holder.bind(episodes[position]!!)
-            holder.itemView.setOnClickListener { onCLick(episodes[position]!!) }
+            holder.bind(items[position]!!)
+            holder.itemView.setOnClickListener { onCLick(items[position]!!) }
         }
     }
 
-    override fun getItemCount(): Int = episodes.size
-
-    override fun getItemViewType(position: Int): Int {
-        return if (episodes[position] != null) {
-            VIEW_TYPE_ITEM
-        } else {
-            VIEW_TYPE_LOADING
-        }
-    }
-
-    fun getSpanSize(position: Int): Int {
-        return if (episodes[position] == null) 2 else 1
-    }
-
-    fun updateData(data: List<Episode?>) {
+    override fun updateData(data: List<Episode?>) {
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
-            EpisodesDiffCallback(episodes, data)
+            EpisodesDiffCallback(items, data)
         )
-        episodes.clear()
-        episodes.addAll(data)
+        items.clear()
+        items.addAll(data)
         diffResult.dispatchUpdatesTo(this)
-    }
-
-    fun addNullItem() {
-        isLoading = true
-        episodes.add(null)
-        notifyItemInserted(episodes.size - 1)
-    }
-
-    fun removeNullItem() {
-        if (isLoading) {
-            isLoading = false
-            if (episodes.last() == null) {
-                episodes.removeLast()
-                notifyItemRemoved(episodes.size)
-            }
-        }
     }
 
     class EpisodesDiffCallback(
@@ -98,14 +64,7 @@ class EpisodesAdapter(
         fun bind(episode: Episode) {
             tvName.text = episode.name
             tvEpisode.text = episode.episode
-            tvAirDate.text = episode.air_date
+            tvAirDate.text = episode.airDate
         }
-    }
-
-    class LoadingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
-
-    companion object {
-        private const val VIEW_TYPE_ITEM = 1
-        private const val VIEW_TYPE_LOADING = 2
     }
 }

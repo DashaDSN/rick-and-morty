@@ -5,9 +5,13 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 
-class NetworkStateChecker(private var context: Context) {
+interface INetworkStateChecker {
+    fun isNetworkAvailable(): Boolean
+}
 
-    fun isNetworkAvailable(): Boolean {
+class NetworkStateChecker(private var context: Context): INetworkStateChecker {
+
+    override fun isNetworkAvailable(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

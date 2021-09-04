@@ -27,7 +27,7 @@
             android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/large_text_size"
+            android:textSize="@dimen/base_text_size"
             android:textStyle="bold"
             tools:text="Name" />
 
@@ -35,21 +35,21 @@
             android:id="@+id/tvStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/base_text_size"
+            android:textSize="@dimen/small_text_size"
             tools:text="@string/character_status" />
 
         <TextView
             android:id="@+id/tvSpecies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/base_text_size"
+            android:textSize="@dimen/small_text_size"
             tools:text="@string/character_species" />
 
         <TextView
             android:id="@+id/tvGender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/base_text_size"
+            android:textSize="@dimen/small_text_size"
             tools:text="@string/character_gender" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
