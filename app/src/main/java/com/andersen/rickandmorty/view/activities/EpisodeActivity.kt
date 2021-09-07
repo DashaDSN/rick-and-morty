@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andersen.rickandmorty.R
 import com.andersen.rickandmorty.data.EpisodeRepository
@@ -17,6 +18,8 @@ import com.andersen.rickandmorty.data.remote.ServiceBuilder
 import com.andersen.rickandmorty.model.EpisodeDetail
 import com.andersen.rickandmorty.model.Result
 import com.andersen.rickandmorty.view.TextViewWithLabel
+import com.andersen.rickandmorty.view.adapters.CharactersAdapter
+import com.andersen.rickandmorty.view.adapters.EpisodesAdapter
 import com.andersen.rickandmorty.viewModel.EpisodeViewModel
 
 class EpisodeActivity : AppCompatActivity() {
@@ -27,6 +30,7 @@ class EpisodeActivity : AppCompatActivity() {
     private lateinit var tvCharacters: TextView
     private lateinit var rvCharacters: RecyclerView
 
+    private lateinit var adapter: CharactersAdapter
     private lateinit var viewModel: EpisodeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,9 +45,9 @@ class EpisodeActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         val networkStateChecker = NetworkStateChecker(this)
-        val dao = getDatabase(this).getEpisodeDao()
+        val database = getDatabase(this)
         val retrofit = ServiceBuilder.service
-        val repository = EpisodeRepository(networkStateChecker, dao, retrofit)
+        val repository = EpisodeRepository(networkStateChecker, database.getEpisodeDao(), database.getCharacterDao(), retrofit)
         viewModel = ViewModelProvider(this, EpisodeViewModel.FACTORY(repository)).get(
             EpisodeViewModel::class.java)
 
@@ -56,6 +60,20 @@ class EpisodeActivity : AppCompatActivity() {
         tvAirDate = findViewById(R.id.tvAirDate)
         tvCharacters = findViewById(R.id.tvCharacters)
         rvCharacters = findViewById(R.id.rvCharacters)
+
+        adapter = CharactersAdapter {
+            val intent = CharacterActivity.newIntent(this, it.id)
+            startActivity(intent)
+        }
+        val layoutManager = GridLayoutManager(this, 2)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return adapter.getSpanSize(position)
+            }
+        }
+
+        rvCharacters.layoutManager = layoutManager
+        rvCharacters.adapter = adapter
     }
 
     private fun changeViewsVisibility() {
@@ -80,6 +98,9 @@ class EpisodeActivity : AppCompatActivity() {
                     // TODO: show loading
                 }
             }
+        }
+        viewModel.characters.observe(this) {
+            adapter.updateData(it)
         }
     }
 

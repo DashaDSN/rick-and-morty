@@ -8,19 +8,38 @@ import retrofit2.http.Query
 interface ApiInterface {
 
     @GET("character")
-    suspend fun getCharacters(@Query("page") page: Int): ServerResponse<Character>
+    suspend fun getCharacters(
+        @Query("page") page: Int? = null,
+        @Query("name") name: String? = null,
+        @Query("status") status: String? = null,
+        @Query("species") species: String? = null,
+        @Query("type") type: String? = null,
+        @Query("gender") gender: String? = null
+    ): ServerResponse<Character>
 
     @GET("location/")
-    suspend fun getLocations(@Query("page") page: Int): ServerResponse<Location>
+    suspend fun getLocations(
+        @Query("page") page: Int? = null,
+        @Query("name") name: String? = null,
+        @Query("type") type: String? = null,
+        @Query("dimension") dimension: String? = null
+    ): ServerResponse<Location>
 
     @GET("episode/")
-    suspend fun getEpisodes(@Query("page") page: Int): ServerResponse<Episode>
+    suspend fun getEpisodes(
+        @Query("page") page: Int? = null,
+        @Query("name") name: String? = null,
+        @Query("episode") episode: String? = null
+    ): ServerResponse<Episode>
 
     @GET("character/{ids}")
-    suspend fun getCharactersById(@Path("ids") ids: String): List<Character>
+    suspend fun getCharactersByIds(@Path("ids") ids: String): List<Character>
 
     @GET("episode/{ids}")
-    suspend fun getEpisodesById(@Path("ids") ids: String): List<Episode>
+    suspend fun getEpisodesByIds(@Path("ids") ids: String): List<Episode>
+
+    @GET("locations/{ids}")
+    suspend fun getLocatinosByIds(@Path("ids") ids: String): List<Location>
 
     @GET("character/{id}")
     suspend fun getCharacterById(@Path("id") id: Int): CharacterDetail

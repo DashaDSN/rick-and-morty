@@ -9,6 +9,6 @@ interface IRepository<T, S> {
     var isItemsLoadedFromDB: Boolean
 
     fun isNetworkAvailable(): Boolean
-    fun getAllItems(page: Int): Flow<Result<List<T>>>
+    //fun getAllItems(page: Int, vararg strings: String?): Flow<Result<List<T>>>
     fun getItemById(id: Int): Flow<Result<S>>
 }

@@ -1,8 +1,10 @@
 package com.andersen.rickandmorty.model
 
+import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.andersen.rickandmorty.data.EpisodeRepository
 import com.andersen.rickandmorty.util.ItemsConverter
 import com.google.gson.annotations.SerializedName
 
@@ -23,11 +25,11 @@ data class LocationDetail(
     @SerializedName("url")
     val url: String
 ) {
-    fun getResidentsId(): String {
-        var str = ""
-        residents.map {
-            str = str.plus(", ${it.substringAfterLast("/")}")
+    fun getResidentsIdList(): List<Int> {
+        return residents.map {
+            val id = it.substringAfterLast("/").toInt()
+            Log.d("ResidentId", id.toString())
+            id
         }
-        return str
     }
 }

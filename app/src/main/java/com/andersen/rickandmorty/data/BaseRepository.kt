@@ -11,8 +11,9 @@ abstract class BaseRepository<T, S>(private val networkStateChecker: INetworkSta
     override var totalPages = 0
     override var isItemsLoadedFromDB = false
 
-    abstract override fun getAllItems(page: Int): Flow<Result<List<T>>>
-    abstract fun getAllItemsCached(): Result<List<T>>
+    //abstract override fun getAllItems(page: Int, vararg strings: String?): Flow<Result<List<T>>>
+    //abstract fun getAllItemsCached(): Result<List<T>>
+
     abstract override fun getItemById(id: Int): Flow<Result<S>>
     abstract fun getItemByIdCached(id: Int): Result<S>
 

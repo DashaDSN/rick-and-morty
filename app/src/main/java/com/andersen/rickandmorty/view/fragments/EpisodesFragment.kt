@@ -38,9 +38,9 @@ class EpisodesFragment : BaseFragment<Episode, EpisodeDetail>() {
         recyclerView.adapter = adapter
 
         val networkStateChecker = NetworkStateChecker(requireContext())
-        val dao = getDatabase(requireContext()).getEpisodeDao()
+        val database = getDatabase(requireContext())
         val retrofit = ServiceBuilder.service
-        val repository = EpisodeRepository(networkStateChecker, dao, retrofit)
+        val repository = EpisodeRepository(networkStateChecker, database.getEpisodeDao(), database.getCharacterDao(), retrofit)
         viewModel = ViewModelProvider(this, EpisodesViewModel.FACTORY(repository)).get(
             EpisodesViewModel::class.java)
     }

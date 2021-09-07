@@ -3,6 +3,7 @@ package com.andersen.rickandmorty.view.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -19,7 +20,7 @@ import com.andersen.rickandmorty.data.remote.ServiceBuilder
 import com.andersen.rickandmorty.model.CharacterDetail
 import com.andersen.rickandmorty.model.Result
 import com.andersen.rickandmorty.view.TextViewWithLabel
-import com.andersen.rickandmorty.view.adapters.CharactersAdapter
+import com.andersen.rickandmorty.view.adapters.EpisodesAdapter
 import com.andersen.rickandmorty.viewModel.CharacterViewModel
 import com.bumptech.glide.Glide
 
@@ -36,26 +37,27 @@ open class CharacterActivity : AppCompatActivity() {
     private lateinit var tvEpisodes: TextView
     private lateinit var rvEpisodes: RecyclerView
 
+    private lateinit var adapter: EpisodesAdapter
     private lateinit var viewModel: CharacterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_character)
-
         initViewModel()
         initViews()
-        changeViewsVisibility()
         subscribeUi()
+        changeViewsVisibility()
     }
 
     private fun initViewModel() {
         val networkStateChecker = NetworkStateChecker(this)
-        val dao = getDatabase(this).getCharacterDao()
+        val database = getDatabase(this)
         val retrofit = ServiceBuilder.service
-        val repository = CharacterRepository(networkStateChecker, dao, retrofit)
+        val repository = CharacterRepository(networkStateChecker, database.getCharacterDao(), database.getEpisodeDao(), retrofit)
         viewModel = ViewModelProvider(this, CharacterViewModel.FACTORY(repository)).get(CharacterViewModel::class.java)
 
         viewModel.getCharacterDetail(intent.getIntExtra(CHARACTER_ID_EXTRA, 0))
+        //Log.d("CharacterActivity", viewModel.character.value.toString())
     }
 
     private fun initViews() {
@@ -70,8 +72,8 @@ open class CharacterActivity : AppCompatActivity() {
         tvEpisodes = findViewById(R.id.tvEpisodes)
         rvEpisodes = findViewById(R.id.rvEpisodes)
 
-        val adapter = CharactersAdapter {
-            val intent = newIntent(this, it.id)
+        adapter = EpisodesAdapter {
+            val intent = EpisodeActivity.newIntent(this, it.id)
             startActivity(intent)
         }
         val layoutManager = GridLayoutManager(this, 2)
@@ -83,7 +85,6 @@ open class CharacterActivity : AppCompatActivity() {
 
         rvEpisodes.layoutManager = layoutManager
         rvEpisodes.adapter = adapter
-        adapter.up
     }
 
     private fun changeViewsVisibility() {
@@ -108,22 +109,26 @@ open class CharacterActivity : AppCompatActivity() {
                 }
                 is Result.Error<*> -> {
                     showToast(getString(R.string.toast_no_data))
+                    finish()
                 }
                 is Result.Loading<*> -> {
                     // TODO: show loading
                 }
             }
         }
+        viewModel.episodes.observe(this) {
+            adapter.updateData(it)
+        }
     }
 
     private fun setCharacter(character: CharacterDetail) {
         tvName.text = character.name
-        tvStatus.text = character.status
+        tvStatus.text = character.status ?: ""
         tvSpecies.text = character.species ?: ""
         tvType.text = character.type ?: ""
-        tvGender.text = character.gender
-        tvOrigin.text = character.origin.name
-        tvLocation.text = character.location.name
+        tvGender.text = character.gender ?: ""
+        tvOrigin.text = character.origin?.name ?: ""
+        tvLocation.text = character.location?.name ?: ""
         //tvEpisodes.text = character.episodes.toString()
         Glide.with(this)
             .load(character.image)

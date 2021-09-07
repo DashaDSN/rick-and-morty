@@ -13,6 +13,8 @@ data class Character(
     val name: String,
     @SerializedName("species")
     val species: String,
+    @SerializedName("type")
+    val type: String,
     @SerializedName("status")
     val status: String,
     @SerializedName("gender")

@@ -1,6 +1,7 @@
 package com.andersen.rickandmorty.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
@@ -38,9 +39,9 @@ class CharactersFragment : BaseFragment<Character, CharacterDetail>() {
         recyclerView.adapter = adapter
 
         val networkStateChecker = NetworkStateChecker(requireContext())
-        val dao = getDatabase(requireContext()).getCharacterDao()
+        val database = getDatabase(requireContext())
         val retrofit = ServiceBuilder.service
-        val repository = CharacterRepository(networkStateChecker, dao, retrofit)
+        val repository = CharacterRepository(networkStateChecker, database.getCharacterDao(), database.getEpisodeDao(), retrofit)
         viewModel = ViewModelProvider(this, CharactersViewModel.FACTORY(repository)).get(CharactersViewModel::class.java)
     }
 
@@ -51,7 +52,8 @@ class CharactersFragment : BaseFragment<Character, CharacterDetail>() {
     ): View? = inflater.inflate(R.layout.fragment_characters, container, false)
 
     override fun filterItems(s: String) {
-        //viewModel.filter(s)
+        Log.d(TAG, "filter string: $s")
+        (viewModel as CharactersViewModel).filterItems(s)
     }
 
     companion object {

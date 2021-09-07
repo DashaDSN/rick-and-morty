@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andersen.rickandmorty.R
 import com.andersen.rickandmorty.data.EpisodeRepository
@@ -20,6 +21,8 @@ import com.andersen.rickandmorty.model.Location
 import com.andersen.rickandmorty.model.LocationDetail
 import com.andersen.rickandmorty.model.Result
 import com.andersen.rickandmorty.view.TextViewWithLabel
+import com.andersen.rickandmorty.view.adapters.CharactersAdapter
+import com.andersen.rickandmorty.view.adapters.EpisodesAdapter
 import com.andersen.rickandmorty.viewModel.EpisodeViewModel
 import com.andersen.rickandmorty.viewModel.LocationViewModel
 
@@ -31,6 +34,7 @@ class LocationActivity : AppCompatActivity() {
     private lateinit var tvResidents: TextView
     private lateinit var rvResidents: RecyclerView
 
+    private lateinit var adapter: CharactersAdapter
     private lateinit var viewModel: LocationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +49,9 @@ class LocationActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         val networkStateChecker = NetworkStateChecker(this)
-        val dao = getDatabase(this).getLocationDao()
+        val database = getDatabase(this)
         val retrofit = ServiceBuilder.service
-        val repository = LocationRepository(networkStateChecker, dao, retrofit)
+        val repository = LocationRepository(networkStateChecker, database.getLocationDao(), database.getCharacterDao(), retrofit)
         viewModel = ViewModelProvider(this, LocationViewModel.FACTORY(repository)).get(LocationViewModel::class.java)
         viewModel.getLocationDetail(intent.getIntExtra(LOCATION_ID_EXTRA, 0))
     }
@@ -58,6 +62,20 @@ class LocationActivity : AppCompatActivity() {
         tvDimension = findViewById(R.id.tvDimension)
         tvResidents = findViewById(R.id.tvResidents)
         rvResidents = findViewById(R.id.rvResidents)
+
+        adapter = CharactersAdapter {
+            val intent = CharacterActivity.newIntent(this, it.id)
+            startActivity(intent)
+        }
+        val layoutManager = GridLayoutManager(this, 2)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return adapter.getSpanSize(position)
+            }
+        }
+
+        rvResidents.layoutManager = layoutManager
+        rvResidents.adapter = adapter
     }
 
     private fun changeViewsVisibility() {
@@ -83,6 +101,9 @@ class LocationActivity : AppCompatActivity() {
                     // TODO: show loading
                 }
             }
+        }
+        viewModel.residents.observe(this) {
+            adapter.updateData(it)
         }
     }
 

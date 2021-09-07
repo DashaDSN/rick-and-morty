@@ -38,9 +38,9 @@ class LocationsFragment : BaseFragment<Location, LocationDetail>() {
         recyclerView.adapter = adapter
 
         val networkStateChecker = NetworkStateChecker(requireContext())
-        val dao = getDatabase(requireContext()).getLocationDao()
+        val database = getDatabase(requireContext())
         val retrofit = ServiceBuilder.service
-        val repository = LocationRepository(networkStateChecker, dao, retrofit)
+        val repository = LocationRepository(networkStateChecker, database.getLocationDao(), database.getCharacterDao(), retrofit)
         viewModel = ViewModelProvider(this, LocationsViewModel.FACTORY(repository)).get(
             LocationsViewModel::class.java)
     }

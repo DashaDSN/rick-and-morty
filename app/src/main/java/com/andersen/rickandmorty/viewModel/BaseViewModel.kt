@@ -9,17 +9,19 @@ import com.andersen.rickandmorty.model.Result
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
-abstract class BaseViewModel<T, S>(private val repository: IRepository<T, S>) : ViewModel() {
-    private var page = 1
+abstract class BaseViewModel<T, S>(protected val repository: IRepository<T, S>) : ViewModel() {
+    protected var page = 1
 
-    private val _itemsLiveData =  MutableLiveData<Result<List<T>>>()
+    protected val _itemsLiveData =  MutableLiveData<Result<List<T>>>()
     val itemsLiveData = _itemsLiveData
 
     init {
         loadFirstPage()
     }
 
-    fun loadFirstPage() {
+    abstract fun loadFirstPage()
+    abstract fun loadNextPage()
+    /*fun loadFirstPage() {
         viewModelScope.launch {
             page = 1
             repository.getAllItems(page++).collect {
@@ -39,9 +41,9 @@ abstract class BaseViewModel<T, S>(private val repository: IRepository<T, S>) : 
                 }
             }
         }
-    }
+    }*/
 
     companion object {
-        private const val TAG = "VIEW_MODEL"
+        const val TAG = "VIEW_MODEL"
     }
 }

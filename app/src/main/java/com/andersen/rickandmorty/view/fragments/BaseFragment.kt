@@ -35,7 +35,7 @@ abstract class BaseFragment<T, S> : Fragment(R.layout.fragment_characters) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setHasOptionsMenu(true)
         initViewModel(view)
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
@@ -60,14 +60,15 @@ abstract class BaseFragment<T, S> : Fragment(R.layout.fragment_characters) {
             when (result) {
                 is Result.Success<*> -> {
                     adapter.removeNullItem()
-                    adapter.updateData(adapter.items.plus(result.data as List<T>))
+                    //adapter.updateData(adapter.items.plus(result.data as List<T>))
+                    adapter.updateData(result.data as List<T>)
 
-                    val newData = result.data as List<T>
+                    /*val newData = result.data as List<T>
                     if (newData.containsAll(adapter.items)) {
                         adapter.updateData(newData)
                     } else {
                         adapter.updateData(adapter.items.plus(newData))
-                    }
+                    }*/
                 }
                 is Result.Error<*> -> {
                     adapter.removeNullItem()

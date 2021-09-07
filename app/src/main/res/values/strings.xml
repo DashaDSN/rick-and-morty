@@ -30,4 +30,7 @@
     <string name="location_residents">Residents:</string>
 
     <string name="btn_search">Search</string>
+    <string name="character_name">Name:</string>
+    <string name="location_name">Name:</string>
+    <string name="episode_name">Name:</string>
 </resources>

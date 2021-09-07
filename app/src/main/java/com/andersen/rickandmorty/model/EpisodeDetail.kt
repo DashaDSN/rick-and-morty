@@ -1,5 +1,6 @@
 package com.andersen.rickandmorty.model
 
+import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
@@ -26,12 +27,12 @@ data class EpisodeDetail(
     @SerializedName("url")
     val url: String
 ) {
-    fun getCharactersId(): String {
-        var str = ""
-        characters.map {
-            str = str.plus(", ${it.substringAfterLast("/")}")
+    fun getCharactersIdList(): List<Int> {
+        return characters.map {
+            val id = it.substringAfterLast("/").toInt()
+            Log.d("CharacterId", id.toString())
+            id
         }
-        return str
     }
 }
 

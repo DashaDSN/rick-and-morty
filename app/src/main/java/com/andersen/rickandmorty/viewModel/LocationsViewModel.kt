@@ -15,6 +15,28 @@ import kotlinx.coroutines.launch
 
 class LocationsViewModel(repository: LocationRepository) : BaseViewModel<Location, LocationDetail>(repository) {
 
+    override fun loadFirstPage() {
+        viewModelScope.launch {
+            page = 1
+            (repository as LocationRepository).getAllItems(page++).collect {
+                if (it is Error) page--
+                _itemsLiveData.value = it
+            }
+        }
+    }
+
+    override fun loadNextPage() {
+        Log.d(TAG, "loadNextPage: $page of ${repository.totalPages}")
+        if (page < repository.totalPages && (repository.isNetworkAvailable() || !repository.isItemsLoadedFromDB)) {
+            viewModelScope.launch {
+                (repository as LocationRepository).getAllItems(page++).collect {
+                    if (it is Error) page--
+                    _itemsLiveData.value = it
+                }
+            }
+        }
+    }
+
     companion object {
         val FACTORY = viewModelFactory(::LocationsViewModel)
     }
