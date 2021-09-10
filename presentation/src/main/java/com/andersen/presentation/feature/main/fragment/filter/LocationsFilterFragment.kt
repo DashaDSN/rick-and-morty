@@ -18,7 +18,7 @@ class LocationsFilterFragment: Fragment(R.layout.fragment_location_filter) {
     private lateinit var btnApply: Button
 
     private lateinit var onClickListener: (locationFilter: LocationFilter) -> Unit
-    private lateinit var filter: LocationFilter
+    private var filter = LocationFilter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

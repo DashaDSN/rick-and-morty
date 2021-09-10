@@ -18,7 +18,7 @@ class CharacterRepository @Inject constructor(
     private val retrofit: com.andersen.data.network.ApiInterface
 ): ICharacterRepository {
 
-    private var totalPages = 0
+    var totalPages = 0
 
     override fun getAllCharacters(
         page: Int?,
@@ -50,6 +50,9 @@ class CharacterRepository @Inject constructor(
                 }
             }
         }.flowOn(Dispatchers.IO)
+            .catch { throwable: Throwable ->
+                emit(Result.Error(throwable.message ?: ""))
+            }
     }
 
     override fun getCharacterDetailById(id: Int): Flow<Result<CharacterDetail>> {
@@ -68,7 +71,6 @@ class CharacterRepository @Inject constructor(
             }
         }.flowOn(Dispatchers.IO)
             .catch { throwable: Throwable ->
-                Log.d(TAG, "Error loading data! ${throwable.message}")
                 emit(Result.Error(throwable.message ?: ""))
             }
     }
@@ -92,6 +94,9 @@ class CharacterRepository @Inject constructor(
                 }
             }
         }.flowOn(Dispatchers.IO)
+            .catch { throwable: Throwable ->
+                emit(Result.Error(throwable.message ?: ""))
+            }
     }
 
     companion object {

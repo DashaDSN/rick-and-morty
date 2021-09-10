@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.andersen.domain.entities.filters.EpisodeFilter
+import com.andersen.domain.entities.main.Episode
 import com.andersen.presentation.R
 
 class EpisodesFilterFragment: Fragment(R.layout.fragment_episode_filter) {
@@ -17,7 +18,7 @@ class EpisodesFilterFragment: Fragment(R.layout.fragment_episode_filter) {
     private lateinit var btnApply: Button
 
     private lateinit var onClickListener: (episodeFilter: EpisodeFilter) -> Unit
-    private lateinit var filter: EpisodeFilter
+    private var filter = EpisodeFilter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

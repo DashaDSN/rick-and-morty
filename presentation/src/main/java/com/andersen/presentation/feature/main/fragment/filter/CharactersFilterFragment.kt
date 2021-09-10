@@ -21,7 +21,7 @@ class CharactersFilterFragment: Fragment(R.layout.fragment_character_filter) {
     private lateinit var btnApply: Button
 
     private lateinit var onClickListener: (characterFilter: CharacterFilter) -> Unit
-    private lateinit var filter: CharacterFilter
+    private var filter = CharacterFilter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

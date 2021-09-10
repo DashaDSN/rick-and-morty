@@ -23,7 +23,6 @@ class CharactersViewModel  @Inject constructor(
 
     init {
         loadFirstPage()
-
     }
 
    override fun loadFirstPage() {

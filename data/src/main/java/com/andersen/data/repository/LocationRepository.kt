@@ -7,6 +7,7 @@ import com.andersen.domain.entities.Result
 import com.andersen.domain.repository.ILocationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -46,6 +47,9 @@ class LocationRepository @Inject constructor(
                 }
             }
         }.flowOn(Dispatchers.IO)
+            .catch { throwable: Throwable ->
+                emit(Result.Error(throwable.message ?: ""))
+            }
     }
 
     override fun getLocationDetailById(id: Int): Flow<Result<LocationDetail>> {
@@ -63,6 +67,9 @@ class LocationRepository @Inject constructor(
                 emit(Result.Success(location))
             }
         }.flowOn(Dispatchers.IO)
+            .catch { throwable: Throwable ->
+                emit(Result.Error(throwable.message ?: ""))
+            }
     }
 
     companion object {
