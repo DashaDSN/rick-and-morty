@@ -1,22 +1,25 @@
-package com.andersen.presentation.feature.main.fragment
+package com.andersen.presentation.feature.main.activities.detail
 
-/*import android.content.Context
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.andersen.rickandmorty.R
-import com.andersen.rickandmorty.data.local.getDatabase
-import com.andersen.rickandmorty.model.LocationDetail
+import com.andersen.domain.entities.Result
+import com.andersen.domain.entities.detail.LocationDetail
+import com.andersen.presentation.R
+import com.andersen.presentation.di.Injector
+import com.andersen.presentation.feature.base.BaseActivity
+import com.andersen.presentation.feature.main.adapters.CharactersAdapter
 import com.andersen.presentation.feature.main.customview.TextViewWithLabel
-import com.andersen.presentation.feature.main.adapter.CharactersAdapter
+import com.andersen.presentation.feature.main.di.DetailViewModelDependencies
+import com.andersen.presentation.feature.main.viewmodel.detail.LocationDetailViewModel
 
-class LocationActivity : AppCompatActivity() {
+class LocationDetailActivity : BaseActivity<LocationDetailViewModel>() {
 
     private lateinit var tvName: TextView
     private lateinit var tvType: TextViewWithLabel
@@ -24,33 +27,29 @@ class LocationActivity : AppCompatActivity() {
     private lateinit var tvResidents: TextView
     private lateinit var rvResidents: RecyclerView
 
+    private var locationId =0
     private lateinit var adapter: CharactersAdapter
-    private lateinit var detailViewModel: com.andersen.presentation.feature.main.viewmodel.LocationDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_location)
+        setContentView(R.layout.activity_location_detail)
 
-        initViewModel()
+        //initViewModel()
         initViews()
         changeViewsVisibility()
         subscribeUi()
     }
 
-    private fun initViewModel() {
-        val networkStateChecker = com.andersen.data.network.NetworkStateChecker(this)
-        val database = getDatabase(this)
-        val retrofit = com.andersen.data.network.ServiceBuilder.service
-        val repository = com.andersen.data.repository.LocationRepository(
-            networkStateChecker,
-            database.getLocationDao(),
-            database.getCharacterDao(),
-            retrofit
-        )
-        detailViewModel = ViewModelProvider(this, com.andersen.presentation.feature.main.viewmodel.LocationDetailViewModel.FACTORY(repository)).get(
-            com.andersen.presentation.feature.main.viewmodel.LocationDetailViewModel::class.java)
-        detailViewModel.getLocationDetail(intent.getIntExtra(LOCATION_ID_EXTRA, 0))
+    override fun injectDependencies() {
+        locationId = intent.getIntExtra(LOCATION_ID_EXTRA, 0)
+        Injector.plusLocationDetailActivityComponent().inject(this)
     }
+
+    override fun injectViewModel() {
+        viewModel = getViewModel()
+        viewModel.setlocationId(locationId)
+    }
+
 
     private fun initViews() {
         tvName = findViewById(R.id.tvName)
@@ -60,7 +59,7 @@ class LocationActivity : AppCompatActivity() {
         rvResidents = findViewById(R.id.rvResidents)
 
         adapter = CharactersAdapter {
-            val intent = CharacterActivity.newIntent(this, it.id)
+            val intent = CharacterDetailActivity.newIntent(this, it.id)
             startActivity(intent)
         }
         val layoutManager = GridLayoutManager(this, 2)
@@ -84,7 +83,7 @@ class LocationActivity : AppCompatActivity() {
     }
 
     private fun subscribeUi() {
-        detailViewModel.location.observe(this) { result ->
+        viewModel.location.observe(this) { result ->
             when (result) {
                 is Result.Success<LocationDetail> -> {
                     changeViewsVisibility()
@@ -98,7 +97,7 @@ class LocationActivity : AppCompatActivity() {
                 }
             }
         }
-        detailViewModel.residents.observe(this) {
+        viewModel.residents.observe(this) {
             adapter.updateData(it)
         }
     }
@@ -117,8 +116,8 @@ class LocationActivity : AppCompatActivity() {
 
     companion object {
         private const val LOCATION_ID_EXTRA = "LOCATION_ID_EXTRA"
-        fun newIntent(context: Context, locationId: Int) = Intent(context, LocationActivity::class.java).apply {
+        fun newIntent(context: Context, locationId: Int) = Intent(context, LocationDetailActivity::class.java).apply {
             putExtra(LOCATION_ID_EXTRA, locationId)
         }
     }
-}*/
+}

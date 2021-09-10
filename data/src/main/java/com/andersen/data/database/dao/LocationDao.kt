@@ -1,8 +1,8 @@
 package com.andersen.data.database.dao
 
 import androidx.room.*
-import com.andersen.domain.entities.Location
-import com.andersen.domain.entities.LocationDetail
+import com.andersen.domain.entities.main.Location
+import com.andersen.domain.entities.detail.LocationDetail
 
 @Dao
 interface LocationDao {

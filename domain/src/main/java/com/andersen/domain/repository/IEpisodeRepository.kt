@@ -1,6 +1,8 @@
 package com.andersen.domain.repository
 
-import com.andersen.domain.entities.*
+import com.andersen.domain.entities.detail.EpisodeDetail
+import com.andersen.domain.entities.main.Episode
+import com.andersen.domain.entities.Result
 import kotlinx.coroutines.flow.Flow
 
 interface IEpisodeRepository {

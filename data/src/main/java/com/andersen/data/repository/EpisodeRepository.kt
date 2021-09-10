@@ -1,8 +1,8 @@
 package com.andersen.data.repository
 
 import android.util.Log
-import com.andersen.domain.entities.Episode
-import com.andersen.domain.entities.EpisodeDetail
+import com.andersen.domain.entities.main.Episode
+import com.andersen.domain.entities.detail.EpisodeDetail
 import com.andersen.domain.entities.Result
 import com.andersen.domain.repository.IEpisodeRepository
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +36,7 @@ class EpisodeRepository @Inject constructor(
                 Log.d(TAG, "Page $page of $totalPages loaded successfully")
                 emit(Result.Success(response.results))
             } catch (throwable: Throwable) {
+                totalPages = 1
                 val episodes = episodeDao.getItems(name, episode)
                 if (!episodes.isNullOrEmpty()) {
                     //isItemsLoadedFromDB = true
@@ -50,7 +51,7 @@ class EpisodeRepository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getEpisodeDetailById(id: Int): Flow<com.andersen.domain.entities.Result<EpisodeDetail>> {
+    override fun getEpisodeDetailById(id: Int): Flow<Result<EpisodeDetail>> {
         return flow {
             emit(Result.Loading<EpisodeDetail>())
             try {
@@ -67,7 +68,7 @@ class EpisodeRepository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getEpisodesByIds(ids: List<Int>): Flow<com.andersen.domain.entities.Result<List<Episode>>> {
+    override fun getEpisodesByIds(ids: List<Int>): Flow<Result<List<Episode>>> {
         return flow {
             emit(Result.Loading<List<Episode>>())
             try {

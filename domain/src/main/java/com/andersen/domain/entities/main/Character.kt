@@ -1,4 +1,4 @@
-package com.andersen.domain.entities
+package com.andersen.domain.entities.main
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

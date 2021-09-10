@@ -24,7 +24,13 @@
             android:name=".feature.main.activities.MainActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".feature.main.activities.DetailActivity"
+            android:name=".feature.main.activities.detail.CharacterDetailActivity"
+            android:parentActivityName=".feature.main.activities.MainActivity" />
+        <activity
+            android:name=".feature.main.activities.detail.EpisodeDetailActivity"
+            android:parentActivityName=".feature.main.activities.MainActivity" />
+        <activity
+            android:name=".feature.main.activities.detail.LocationDetailActivity"
             android:parentActivityName=".feature.main.activities.MainActivity" />
     </application>
 

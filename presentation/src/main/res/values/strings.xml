@@ -33,4 +33,6 @@
     <string name="character_name">Name:</string>
     <string name="location_name">Name:</string>
     <string name="episode_name">Name:</string>
+    <string name="btn_filter">Filter</string>
+    <string name="btn_apply">Apply</string>
 </resources>

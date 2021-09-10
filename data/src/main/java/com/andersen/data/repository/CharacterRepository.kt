@@ -2,7 +2,9 @@ package com.andersen.data.repository
 
 import android.util.Log
 import com.andersen.data.database.dao.CharacterDao
-import com.andersen.domain.entities.*
+import com.andersen.domain.entities.detail.CharacterDetail
+import com.andersen.domain.entities.main.Character
+import com.andersen.domain.entities.Result
 import com.andersen.domain.repository.ICharacterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -35,9 +37,10 @@ class CharacterRepository @Inject constructor(
                 characterDao.deleteItems(response.results)
                 characterDao.insertItems(response.results)
                 //isItemsLoadedFromDB = false
-                Log.d(TAG, "Page $page of $response.totalPages loaded successfully")
+                Log.d(TAG, "Page $page of $totalPages loaded successfully")
                 emit(Result.Success(response.results))
             } catch (throwable: Throwable) {
+                totalPages = 1
                 val characters = characterDao.getItems(name, status, species, type, gender)
                 if (!characters.isNullOrEmpty()) {
                     //isItemsLoadedFromDB = true

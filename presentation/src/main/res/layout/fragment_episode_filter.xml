@@ -29,25 +29,35 @@
 
 
     <TextView
-        android:id="@+id/tvType"
+        android:id="@+id/tvEpisode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:labelFor="@id/etSpecies"
+        android:labelFor="@id/etEpisode"
         android:text="@string/episode"
-        app:layout_constraintBottom_toBottomOf="@+id/etType"
+        app:layout_constraintBottom_toBottomOf="@+id/etEpisode"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/etType"
-        app:layout_constraintEnd_toStartOf="@+id/etType"/>
+        app:layout_constraintTop_toTopOf="@+id/etEpisode"
+        app:layout_constraintEnd_toStartOf="@+id/etEpisode"/>
 
     <EditText
-        android:id="@+id/etType"
+        android:id="@+id/etEpisode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:importantForAutofill="no"
         android:inputType="textShortMessage"
         android:lines="1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvType"
+        app:layout_constraintStart_toEndOf="@+id/tvEpisode"
         app:layout_constraintTop_toBottomOf="@+id/etName" />
+
+    <Button
+        android:id="@+id/btnApply"
+        android:text="@string/btn_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etEpisode"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

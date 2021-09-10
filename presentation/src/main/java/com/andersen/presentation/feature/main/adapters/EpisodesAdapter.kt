@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.andersen.domain.entities.Episode
+import com.andersen.domain.entities.main.Episode
 import com.andersen.presentation.R
 import com.andersen.presentation.feature.base.BaseAdapter
 
 class EpisodesAdapter(
     private val onCLick: (Episode) -> Unit
-) : BaseAdapter<Episode>(onCLick) {
+) : BaseAdapter<Episode>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ITEM) {

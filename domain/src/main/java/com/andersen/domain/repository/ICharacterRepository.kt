@@ -1,6 +1,8 @@
 package com.andersen.domain.repository
 
-import com.andersen.domain.entities.*
+import com.andersen.domain.entities.detail.CharacterDetail
+import com.andersen.domain.entities.main.Character
+import com.andersen.domain.entities.Result
 import kotlinx.coroutines.flow.Flow
 
 /*interface IRepository<T, S> {

@@ -1,7 +1,7 @@
 package com.andersen.domain.interactors
 
-import com.andersen.domain.entities.Episode
-import com.andersen.domain.entities.EpisodeDetail
+import com.andersen.domain.entities.main.Episode
+import com.andersen.domain.entities.detail.EpisodeDetail
 import com.andersen.domain.entities.Result
 import com.andersen.domain.repository.IEpisodeRepository
 import kotlinx.coroutines.flow.Flow

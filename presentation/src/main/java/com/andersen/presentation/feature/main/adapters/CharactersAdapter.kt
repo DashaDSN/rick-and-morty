@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.andersen.presentation.feature.base.BaseAdapter
 import com.bumptech.glide.Glide
-import com.andersen.domain.entities.Character
+import com.andersen.domain.entities.main.Character
 import com.andersen.presentation.R
 
 class CharactersAdapter(
     private val onCLick: (Character) -> Unit
-) : BaseAdapter<Character>(onCLick) {
+) : BaseAdapter<Character>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ITEM) {

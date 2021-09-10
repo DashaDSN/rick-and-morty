@@ -1,4 +1,4 @@
-package com.andersen.presentation.feature.main.fragment
+package com.andersen.presentation.feature.main.fragment.detail
 
 /*import android.content.Context
 import android.content.Intent
@@ -10,13 +10,15 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.andersen.rickandmorty.R
-import com.andersen.rickandmorty.data.local.getDatabase
-import com.andersen.rickandmorty.model.EpisodeDetail
+import com.andersen.domain.entities.detail.EpisodeDetail
+import com.andersen.domain.entities.Result
+import com.andersen.presentation.R
+import com.andersen.presentation.feature.base.BaseDetailFragment
+import com.andersen.presentation.feature.main.activities.DetailActivity
+import com.andersen.presentation.feature.main.adapters.CharactersAdapter
 import com.andersen.presentation.feature.main.customview.TextViewWithLabel
-import com.andersen.presentation.feature.main.adapter.CharactersAdapter
 
-class EpisodeActivity : AppCompatActivity() {
+class EpisodeDetailFragment: BaseDetailFragment<EpisodeDetail>(R.layout.fragment_episode_detail) {
 
     private lateinit var tvName: TextView
     private lateinit var tvEpisode: TextViewWithLabel
@@ -25,11 +27,10 @@ class EpisodeActivity : AppCompatActivity() {
     private lateinit var rvCharacters: RecyclerView
 
     private lateinit var adapter: CharactersAdapter
-    private lateinit var detailViewModel: com.andersen.presentation.feature.main.viewmodel.EpisodeDetailViewModel
+    private lateinit var detailViewModel: com.andersen.presentation.feature.main.viewmodel.detail.EpisodeDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_episode)
 
         initViewModel()
         initViews()
@@ -38,8 +39,8 @@ class EpisodeActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        val networkStateChecker = com.andersen.data.network.NetworkStateChecker(this)
-        val database = getDatabase(this)
+        /*val networkStateChecker = com.andersen.data.network.NetworkStateChecker(this)
+        //val database = getDatabase(this)
         val retrofit = com.andersen.data.network.ServiceBuilder.service
         val repository = com.andersen.data.repository.EpisodeRepository(
             networkStateChecker,
@@ -48,9 +49,9 @@ class EpisodeActivity : AppCompatActivity() {
             retrofit
         )
         detailViewModel = ViewModelProvider(this, com.andersen.presentation.feature.main.viewmodel.EpisodeDetailViewModel.FACTORY(repository)).get(
-            com.andersen.presentation.feature.main.viewmodel.EpisodeDetailViewModel::class.java)
+            com.andersen.presentation.feature.main.viewmodel.EpisodeDetailViewModel::class.java)*/
 
-        detailViewModel.getEpisodeDetail(intent.getIntExtra(EPISODE_ID_EXTRA, 0))
+        //detailViewModel.getEpisodeDetail(intent.getIntExtra(EPISODE_ID_EXTRA, 0))
     }
 
     private fun initViews() {
@@ -61,7 +62,7 @@ class EpisodeActivity : AppCompatActivity() {
         rvCharacters = findViewById(R.id.rvCharacters)
 
         adapter = CharactersAdapter {
-            val intent = CharacterActivity.newIntent(this, it.id)
+            val intent = DetailActivity.newIntent(this, it.id)
             startActivity(intent)
         }
         val layoutManager = GridLayoutManager(this, 2)
@@ -86,9 +87,9 @@ class EpisodeActivity : AppCompatActivity() {
     private fun subscribeUi() {
         detailViewModel.episode.observe(this) { result ->
             when (result) {
-                is Result.Success<EpisodeDetail> -> {
+                is Result.Success<*> -> {
                     changeViewsVisibility()
-                    setEpisode(result.data!!)
+                    setEpisode(result.data)
                 }
                 is Result.Error<*> -> {
                     showToast(getString(R.string.toast_no_data))

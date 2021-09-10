@@ -3,12 +3,9 @@ package com.andersen.presentation.feature.base
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.andersen.presentation.feature.main.adapters.CharactersAdapter
 
 // adapter for recycler view items with LoadingViewHolder
-abstract class BaseAdapter<T>(
-    private val onCLick: (T) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class BaseAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var isLoading = false
     var items = arrayListOf<T?>()

@@ -1,4 +1,4 @@
-package com.andersen.domain.entities
+package com.andersen.domain.entities.detail
 
 import android.util.Log
 import androidx.room.Embedded

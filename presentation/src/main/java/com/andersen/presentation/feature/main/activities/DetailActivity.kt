@@ -1,11 +1,12 @@
 package com.andersen.presentation.feature.main.activities
 
-import android.content.Context
+/*import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.andersen.presentation.R
+import com.andersen.presentation.feature.main.fragment.detail.CharacterDetailFragment
 
 class DetailActivity : AppCompatActivity() {
 
@@ -13,7 +14,7 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        /*val itemId = intent.getIntExtra(ITEM_ID_EXTRA, 0)
+        val itemId = intent.getIntExtra(ITEM_ID_EXTRA, 0)
 
         when (itemId) {
             R.id.navigation_characters-> {
@@ -21,15 +22,15 @@ class DetailActivity : AppCompatActivity() {
                 true
             }
             R.id.navigation_locations -> {
-                //loadFragment(LocationDetailFragment.newInstance())
+                loadFragment(LocationDetailFragment.newInstance())
                 true
             }
             R.id.navigation_episodes -> {
-                //loadFragment(EpisodesFragment.newInstance())
+                loadFragment(EpisodeDetailFragment.newInstance())
                 true
             }
             else -> false
-        }*/
+        }
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -45,3 +46,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 }
+
+sealed class DetailItem {
+
+}*/

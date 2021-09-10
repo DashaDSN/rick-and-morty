@@ -10,4 +10,9 @@
         android:title="@string/btn_search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_filter"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/btn_filter"
+        app:showAsAction="always" />
 </menu>

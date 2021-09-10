@@ -13,6 +13,7 @@ import com.andersen.domain.interactors.*
 import com.andersen.domain.repository.ICharacterRepository
 import com.andersen.domain.repository.IEpisodeRepository
 import com.andersen.domain.repository.ILocationRepository
+import com.andersen.presentation.di.ActivityScope
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

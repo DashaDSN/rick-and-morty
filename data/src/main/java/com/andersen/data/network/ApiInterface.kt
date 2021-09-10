@@ -1,7 +1,12 @@
 package com.andersen.data.network
 
 import com.andersen.data.model.ServerResponse
-import com.andersen.domain.entities.*
+import com.andersen.domain.entities.detail.CharacterDetail
+import com.andersen.domain.entities.detail.EpisodeDetail
+import com.andersen.domain.entities.detail.LocationDetail
+import com.andersen.domain.entities.main.Character
+import com.andersen.domain.entities.main.Episode
+import com.andersen.domain.entities.main.Location
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

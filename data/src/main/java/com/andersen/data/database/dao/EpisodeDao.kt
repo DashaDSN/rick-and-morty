@@ -1,8 +1,8 @@
 package com.andersen.data.database.dao
 
 import androidx.room.*
-import com.andersen.domain.entities.Episode
-import com.andersen.domain.entities.EpisodeDetail
+import com.andersen.domain.entities.main.Episode
+import com.andersen.domain.entities.detail.EpisodeDetail
 
 @Dao
 interface EpisodeDao {

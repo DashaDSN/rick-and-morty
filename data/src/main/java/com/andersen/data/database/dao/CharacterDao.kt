@@ -1,8 +1,8 @@
 package com.andersen.data.database.dao
 
 import androidx.room.*
-import com.andersen.domain.entities.Character
-import com.andersen.domain.entities.CharacterDetail
+import com.andersen.domain.entities.main.Character
+import com.andersen.domain.entities.detail.CharacterDetail
 
 @Dao
 interface CharacterDao {

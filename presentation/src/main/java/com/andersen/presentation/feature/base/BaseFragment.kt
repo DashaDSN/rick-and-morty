@@ -22,7 +22,7 @@ abstract class BaseFragment<T>(layoutRes: Int) : Fragment(layoutRes) {
     @Inject
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
     protected inline fun <reified T: ViewModel> getViewModel(): T = ViewModelProvider(this, viewModelFactory)[T::class.java]
-    protected lateinit var viewModel: BaseViewModel<T>
+    protected open lateinit var viewModel: ItemsViewModel<T>
 
     protected lateinit var adapter: BaseAdapter<T>
 
@@ -30,9 +30,16 @@ abstract class BaseFragment<T>(layoutRes: Int) : Fragment(layoutRes) {
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
+    private var searchView: SearchView? = null
+    //private var state: Parcelable? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+
+        /*if (savedInstanceState != null) {
+            state = savedInstanceState.getParcelable(PARCELABLE_STATE_EXTRA)
+        }*/
 
         layoutManager = GridLayoutManager(context, 2)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -57,12 +64,11 @@ abstract class BaseFragment<T>(layoutRes: Int) : Fragment(layoutRes) {
     }
 
     private fun subscribeUi() {
+        viewModel.itemsLiveData.removeObservers(viewLifecycleOwner)
         viewModel.itemsLiveData.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is  Result.Success<*> -> {
                     adapter.removeNullItem()
-                    //adapter.updateData(adapter.items.plus(result.data as List<T>))
-                    //adapter.updateData(result.data as List<T>)
 
                     val newData = result.data as List<T>
                     if (adapter.items.containsAll(newData)) {
@@ -79,6 +85,7 @@ abstract class BaseFragment<T>(layoutRes: Int) : Fragment(layoutRes) {
                     adapter.addNullItem()
                 }
             }
+            //layoutManager.onRestoreInstanceState(state)
         }
     }
 
@@ -97,16 +104,25 @@ abstract class BaseFragment<T>(layoutRes: Int) : Fragment(layoutRes) {
         }
     }
 
+    /*override fun onPause() {
+        super.onPause()
+        state = layoutManager.onSaveInstanceState()
+    }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(PARCELABLE_STATE_EXTRA, state)
+    }*/
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.action_bar_menu, menu)
-        val menuItem = menu.findItem(R.id.menu_search)
-        val searchView: SearchView = menuItem.actionView as SearchView
+        val searchItem = menu.findItem(R.id.menu_search)
+        val filterItem = menu.findItem(R.id.menu_filter)
+        searchView = searchItem.actionView as SearchView
 
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+        searchView!!.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(s: String?): Boolean {
-                s?.let { viewModel.filterItems(it) }
+                s?.let { viewModel.setSearchString(it) }
                 return false
             }
 
@@ -115,11 +131,36 @@ abstract class BaseFragment<T>(layoutRes: Int) : Fragment(layoutRes) {
             }
 
         })
+
+        searchView!!.setOnCloseListener {
+            viewModel.deleteSearchString()
+            false
+        }
+
+        filterItem.setOnMenuItemClickListener {
+            loadFilterFragment()
+            false
+        }
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    abstract fun loadFilterFragment()
+    abstract fun removeFilterFragment()
+    //abstract fun applyFilters()
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        searchView?.setQuery("", false)
+        searchView?.isIconified = true
+    }
 
     private fun showToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
+
+    /*companion object {
+        private const val PARCELABLE_STATE_EXTRA = "PARCELABLE_STATE_EXTRA"
+    }*/
 }
+

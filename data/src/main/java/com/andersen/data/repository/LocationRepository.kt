@@ -1,8 +1,8 @@
 package com.andersen.data.repository
 
 import android.util.Log
-import com.andersen.domain.entities.Location
-import com.andersen.domain.entities.LocationDetail
+import com.andersen.domain.entities.main.Location
+import com.andersen.domain.entities.detail.LocationDetail
 import com.andersen.domain.entities.Result
 import com.andersen.domain.repository.ILocationRepository
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +37,7 @@ class LocationRepository @Inject constructor(
                 Log.d(TAG, "Page $page of $totalPages loaded successfully")
                 emit(Result.Success(response.results))
             } catch (throwable: Throwable) {
+                totalPages = 1
                 val locations = locationDao.getItems(name, type, dimension)
                 if (!locations.isNullOrEmpty()) {
                     //isItemsLoadedFromDB = true

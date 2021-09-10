@@ -1,17 +1,17 @@
-package com.andersen.domain.entities
+package com.andersen.domain.entities.main
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "locations")
-data class Location(
+@Entity(tableName = "episodes")
+data class Episode(
     @PrimaryKey
     @SerializedName("id")
     val id: Int,
     @SerializedName("name")
     val name: String,
-    @SerializedName("type")
-    val type: String,
-    @SerializedName("dimension")
-    val dimension: String)
+    @SerializedName("episode")
+    val episode: String,
+    @SerializedName("air_date")
+    val airDate: String)

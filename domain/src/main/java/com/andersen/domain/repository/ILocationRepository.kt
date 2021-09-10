@@ -1,6 +1,8 @@
 package com.andersen.domain.repository
 
-import com.andersen.domain.entities.*
+import com.andersen.domain.entities.detail.LocationDetail
+import com.andersen.domain.entities.main.Location
+import com.andersen.domain.entities.Result
 import kotlinx.coroutines.flow.Flow
 
 interface ILocationRepository {

@@ -1,8 +1,7 @@
 package com.andersen.domain.interactors
 
-import android.util.Log
-import com.andersen.domain.entities.Character
-import com.andersen.domain.entities.CharacterDetail
+import com.andersen.domain.entities.main.Character
+import com.andersen.domain.entities.detail.CharacterDetail
 import com.andersen.domain.entities.Result
 import com.andersen.domain.repository.ICharacterRepository
 import kotlinx.coroutines.flow.Flow

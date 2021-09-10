@@ -1,20 +1,30 @@
-package com.andersen.presentation.feature.main.fragment
+package com.andersen.presentation.feature.main.activities.detail
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.andersen.domain.entities.CharacterDetail
+import com.andersen.domain.entities.Result
+import com.andersen.domain.entities.detail.CharacterDetail
 import com.andersen.presentation.R
-import com.andersen.presentation.feature.base.BaseDetailFragment
+import com.andersen.presentation.di.Injector
+import com.andersen.presentation.feature.base.BaseActivity
+import com.andersen.presentation.feature.main.adapters.EpisodesAdapter
 import com.andersen.presentation.feature.main.customview.TextViewWithLabel
+import com.andersen.presentation.feature.main.di.DetailViewModelDependencies
+import com.andersen.presentation.feature.main.viewmodel.detail.CharacterDetailViewModel
 import com.bumptech.glide.Glide
+import javax.inject.Inject
 
-/*class CharacterDetailFragment: BaseDetailFragment<CharacterDetail>(R.layout.fragment_character_detail) {
+class CharacterDetailActivity : BaseActivity<CharacterDetailViewModel>() {
 
     private lateinit var ivImage: ImageView
     private lateinit var tvName: TextView
@@ -27,32 +37,36 @@ import com.bumptech.glide.Glide
     private lateinit var tvEpisodes: TextView
     private lateinit var rvEpisodes: RecyclerView
 
-    //private lateinit var adapter: EpisodesAdapter
-    //private lateinit var detailViewModel: CharacterDetail
+    private var characterId = 0
+    private lateinit var adapter: EpisodesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.fragment_character_detail)
-        //initViewModel()
+        setContentView(R.layout.activity_character_detail)
+        //initViewModel(
         initViews()
         subscribeUi()
         changeViewsVisibility()
     }
 
-    /*private fun initViewModel() {
-        /val networkStateChecker = com.andersen.data.network.NetworkStateChecker(this)
-        val database = getDatabase(this)
-        val retrofit = com.andersen.data.network.ServiceBuilder.service
-        val repository = com.andersen.data.repository.CharacterRepository(
-            networkStateChecker,
-            database.getCharacterDao(),
-            database.getEpisodeDao(),
-            retrofit
-        )
-        detailViewModel = ViewModelProvider(this, com.andersen.presentation.feature.main.viewmodel.CharacterDetailViewModel.FACTORY(repository)).get(
-            com.andersen.presentation.feature.main.viewmodel.CharacterDetailViewModel::class.java)
+    override fun injectDependencies() {
+        characterId = intent.getIntExtra(CHARACTER_ID_EXTRA, 0)
+        Injector.plusCharacterDetailActivityComponent().inject(this)
+    }
 
-        detailViewModel.getCharacterDetail(intent.getIntExtra(CHARACTER_ID_EXTRA, 0))
+    override fun injectViewModel() {
+        viewModel = getViewModel()
+        viewModel.setCharacterId(characterId)
+    }
+
+    /*private fun initViewModel() {
+        val networkStateChecker = NetworkStateChecker(this)
+        val database = getDatabase(this)
+        val retrofit = ServiceBuilder.service
+        val repository = CharacterRepository(networkStateChecker, database.getCharacterDao(), database.getEpisodeDao(), retrofit)
+        viewModel = ViewModelProvider(this, CharacterViewModel.FACTORY(repository)).get(CharacterViewModel::class.java)
+
+        viewModel.getCharacterDetail(intent.getIntExtra(CHARACTER_ID_EXTRA, 0))
         //Log.d("CharacterActivity", viewModel.character.value.toString())
     }*/
 
@@ -69,8 +83,8 @@ import com.bumptech.glide.Glide
         rvEpisodes = findViewById(R.id.rvEpisodes)
 
         adapter = EpisodesAdapter {
-            val intent = EpisodeActivity.newIntent(this, it.id)
-            startActivity(intent)
+            // intent = EpisodeDetailActivity.newIntent(this, it.id)
+            //startActivity(intent)
         }
         val layoutManager = GridLayoutManager(this, 2)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -97,7 +111,7 @@ import com.bumptech.glide.Glide
     }
 
     private fun subscribeUi() {
-        detailViewModel.character.observe(this) { result ->
+        viewModel.character.observe(this) { result ->
             when (result) {
                 is Result.Success<CharacterDetail> -> {
                     changeViewsVisibility()
@@ -112,7 +126,7 @@ import com.bumptech.glide.Glide
                 }
             }
         }
-        detailViewModel.episodes.observe(this) {
+        viewModel.episodes.observe(this) {
             adapter.updateData(it)
         }
     }
@@ -138,10 +152,8 @@ import com.bumptech.glide.Glide
 
     companion object {
         private const val CHARACTER_ID_EXTRA = "CHARACTER_ID_EXTRA"
-        fun newInstance(itemId: Int) = CharacterDetailFragment().also {
-            it.arguments = Bundle().apply {
-                putParcelable(CHARACTER_ID_EXTRA)
-            }
+        fun newIntent(context: Context, characterId: Int) = Intent(context, CharacterDetailActivity::class.java).apply {
+            putExtra(CHARACTER_ID_EXTRA, characterId)
         }
     }
-}*/
+}

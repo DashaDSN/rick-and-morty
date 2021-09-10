@@ -1,7 +1,7 @@
 package com.andersen.domain.interactors
 
-import com.andersen.domain.entities.Location
-import com.andersen.domain.entities.LocationDetail
+import com.andersen.domain.entities.main.Location
+import com.andersen.domain.entities.detail.LocationDetail
 import com.andersen.domain.entities.Result
 import com.andersen.domain.repository.ILocationRepository
 import kotlinx.coroutines.flow.Flow
