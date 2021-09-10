@@ -1,9 +1,6 @@
 package com.andersen.presentation.feature.main.di
 
-import com.andersen.presentation.di.ActivityScope
-import com.andersen.presentation.feature.main.activities.detail.CharacterDetailActivity
-import com.andersen.presentation.feature.main.activities.detail.EpisodeDetailActivity
-import com.andersen.presentation.feature.main.activities.detail.LocationDetailActivity
+import com.andersen.presentation.di.FragmentScope
 import com.andersen.presentation.feature.main.fragment.filter.CharactersFilterFragment
 import com.andersen.presentation.feature.main.fragment.filter.EpisodesFilterFragment
 import com.andersen.presentation.feature.main.fragment.filter.LocationsFilterFragment
@@ -18,9 +15,7 @@ interface MainActivityComponent {
     fun inject(fragment: EpisodesFragment)
     fun inject(fragment: LocationsFragment)
 
-    fun injectCharactersFilterFragment(fragment: CharactersFilterFragment)
-    fun injectEpisodesFilterFragment(fragment: EpisodesFilterFragment)
-    fun injectLocationsFilterFragment(fragment: LocationsFilterFragment)
-
-    //fun inject(fragment: BaseFragment<*>)
+    fun inject(fragment: CharactersFilterFragment)
+    fun inject(fragment: EpisodesFilterFragment)
+    fun inject(fragment: LocationsFilterFragment)
 }

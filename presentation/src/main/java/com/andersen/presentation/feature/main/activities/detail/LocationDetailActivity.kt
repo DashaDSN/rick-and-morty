@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +15,6 @@ import com.andersen.presentation.di.Injector
 import com.andersen.presentation.feature.base.BaseActivity
 import com.andersen.presentation.feature.main.adapters.CharactersAdapter
 import com.andersen.presentation.feature.main.customview.TextViewWithLabel
-import com.andersen.presentation.feature.main.di.DetailViewModelDependencies
 import com.andersen.presentation.feature.main.viewmodel.detail.LocationDetailViewModel
 
 class LocationDetailActivity : BaseActivity<LocationDetailViewModel>() {
@@ -34,7 +32,6 @@ class LocationDetailActivity : BaseActivity<LocationDetailViewModel>() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_detail)
 
-        //initViewModel()
         initViews()
         changeViewsVisibility()
         subscribeUi()
@@ -79,7 +76,6 @@ class LocationDetailActivity : BaseActivity<LocationDetailViewModel>() {
         tvDimension.isVisible = !tvDimension.isVisible
         tvResidents.isVisible = !tvResidents.isVisible
         rvResidents.isVisible = !rvResidents.isVisible
-
     }
 
     private fun subscribeUi() {
@@ -106,13 +102,11 @@ class LocationDetailActivity : BaseActivity<LocationDetailViewModel>() {
         tvName.text = location.name
         tvType.text = location.type
         tvDimension.text = location.dimension
-        //tvResidents.text = location.residents.toString()
     }
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-
 
     companion object {
         private const val LOCATION_ID_EXTRA = "LOCATION_ID_EXTRA"

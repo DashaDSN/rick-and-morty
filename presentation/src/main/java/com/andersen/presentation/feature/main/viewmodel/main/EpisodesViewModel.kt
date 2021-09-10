@@ -2,17 +2,15 @@ package com.andersen.presentation.feature.main.viewmodel.main
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.andersen.domain.entities.main.Episode
 import com.andersen.domain.entities.Result
 import com.andersen.domain.entities.filters.EpisodeFilter
+import com.andersen.domain.entities.main.Episode
 import com.andersen.domain.interactors.IEpisodeInteractor
-import com.andersen.presentation.di.ActivityScope
 import com.andersen.presentation.di.Injector
 import com.andersen.presentation.feature.base.ItemsViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 class EpisodesViewModel @Inject constructor(
     private val episodeInteractor: IEpisodeInteractor
@@ -66,7 +64,6 @@ class EpisodesViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        //Injector.clearMainActivityComponent()
         Injector.clearEpisodesFragmentComponent()
     }
 

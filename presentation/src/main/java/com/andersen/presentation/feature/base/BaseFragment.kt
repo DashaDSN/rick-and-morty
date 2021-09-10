@@ -31,15 +31,10 @@ abstract class BaseFragment<T>(layoutRes: Int) : Fragment(layoutRes) {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private var searchView: SearchView? = null
-    //private var state: Parcelable? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-
-        /*if (savedInstanceState != null) {
-            state = savedInstanceState.getParcelable(PARCELABLE_STATE_EXTRA)
-        }*/
 
         layoutManager = GridLayoutManager(context, 2)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -85,7 +80,6 @@ abstract class BaseFragment<T>(layoutRes: Int) : Fragment(layoutRes) {
                     adapter.addNullItem()
                 }
             }
-            //layoutManager.onRestoreInstanceState(state)
         }
     }
 
@@ -103,16 +97,6 @@ abstract class BaseFragment<T>(layoutRes: Int) : Fragment(layoutRes) {
             }
         }
     }
-
-    /*override fun onPause() {
-        super.onPause()
-        state = layoutManager.onSaveInstanceState()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable(PARCELABLE_STATE_EXTRA, state)
-    }*/
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.action_bar_menu, menu)
@@ -147,7 +131,6 @@ abstract class BaseFragment<T>(layoutRes: Int) : Fragment(layoutRes) {
 
     abstract fun loadFilterFragment()
     abstract fun removeFilterFragment()
-    //abstract fun applyFilters()
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -159,8 +142,5 @@ abstract class BaseFragment<T>(layoutRes: Int) : Fragment(layoutRes) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    /*companion object {
-        private const val PARCELABLE_STATE_EXTRA = "PARCELABLE_STATE_EXTRA"
-    }*/
 }
 

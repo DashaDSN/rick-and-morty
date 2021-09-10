@@ -2,11 +2,10 @@ package com.andersen.presentation.feature.main.viewmodel.main
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.andersen.domain.entities.main.Location
 import com.andersen.domain.entities.Result
 import com.andersen.domain.entities.filters.LocationFilter
+import com.andersen.domain.entities.main.Location
 import com.andersen.domain.interactors.ILocationInteractor
-import com.andersen.presentation.di.ActivityScope
 import com.andersen.presentation.di.Injector
 import com.andersen.presentation.feature.base.ItemsViewModel
 import kotlinx.coroutines.flow.collect
@@ -65,7 +64,6 @@ class LocationsViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        //Injector.clearMainActivityComponent()
         Injector.clearLocationsFragmentComponent()
     }
 

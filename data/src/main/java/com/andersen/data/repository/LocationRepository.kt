@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class LocationRepository @Inject constructor(
-    //networkStateChecker: com.andersen.data.network.NetworkStateChecker,
     private val locationDao: com.andersen.data.database.dao.LocationDao,
     private val retrofit: com.andersen.data.network.ApiInterface
 ): ILocationRepository {
@@ -33,18 +32,15 @@ class LocationRepository @Inject constructor(
                 totalPages = response.info.pages
                 locationDao.deleteItems(response.results)
                 locationDao.insertItems(response.results)
-                //isItemsLoadedFromDB = false
                 Log.d(TAG, "Page $page of $totalPages loaded successfully")
                 emit(Result.Success(response.results))
             } catch (throwable: Throwable) {
                 totalPages = 1
                 val locations = locationDao.getItems(name, type, dimension)
                 if (!locations.isNullOrEmpty()) {
-                    //isItemsLoadedFromDB = true
                     Log.d(TAG, "${locations.size} items loaded from database")
                     emit(Result.Success(locations))
                 } else {
-                    //isItemsLoadedFromDB = false
                     Log.d(TAG, "Error loading data! ${throwable.message}")
                     emit(Result.Error<List<Location>>(throwable.message ?: ""))
                 }
@@ -59,11 +55,11 @@ class LocationRepository @Inject constructor(
                 val response = retrofit.getLocationById(id)
                 locationDao.deleteDetailItem(response)
                 locationDao.insertDetailItem(response)
-                Log.d(TAG, "Location $id loaded successfully")
+                Log.d(TAG, "Item $id loaded successfully")
                 emit(Result.Success(response))
             } catch (throwable: Throwable) {
                 val location = locationDao.getDetailItemById(id)
-                Log.d(TAG, "Location $id loaded from database")
+                Log.d(TAG, "Item $id loaded from database")
                 emit(Result.Success(location))
             }
         }.flowOn(Dispatchers.IO)

@@ -6,39 +6,24 @@ import com.andersen.domain.entities.detail.LocationDetail
 import com.andersen.domain.entities.main.Character
 import com.andersen.domain.interactors.ICharacterInteractor
 import com.andersen.domain.interactors.ILocationInteractor
-import com.andersen.presentation.di.ActivityScope
 import com.andersen.presentation.di.Injector
 import com.andersen.presentation.feature.base.BaseViewModel
-import com.andersen.presentation.feature.main.di.DetailViewModelDependencies
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class LocationDetailViewModel @Inject constructor(
-    //detailViewModelDependencies: DetailViewModelDependencies,
     locationInteractor: ILocationInteractor,
     characterInteractor: ICharacterInteractor
 ): BaseViewModel() {
-
 
     private var _id = MutableLiveData<Int>()
     private val _location: LiveData<Result<LocationDetail>> = _id.distinctUntilChanged().switchMap {
         liveData {
             locationInteractor.getLocationDetailById(it).collect { result ->
-                //if (result is Result.Success) residentsIds.value = result.data!!.getResidentsIdList()
                 emit(result)
             }
         }
     }
-
-    /*private var locationId = 0
-
-    private val _location: LiveData<Result<LocationDetail>> =
-        liveData {
-            locationInteractor.getLocationDetailById(locationId).collect {  result ->
-                emit(result)
-            }
-        }
-*/
 
     val residents: LiveData<List<com.andersen.domain.entities.main.Character>> = _location.distinctUntilChanged().switchMap {
         liveData {

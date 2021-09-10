@@ -19,7 +19,6 @@ class CharactersFragment() : BaseFragment<Character>(R.layout.fragment_character
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Injector.plusMainActivityComponent().inject(this)
         Injector.plusCharactersFragmentComponent().inject(this)
 
         viewModel = getViewModel<CharactersViewModel>()

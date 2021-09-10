@@ -1,4 +1,4 @@
-package com.example.intensive_2.di
+package com.andersen.presentation.di
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

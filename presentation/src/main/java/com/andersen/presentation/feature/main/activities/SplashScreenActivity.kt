@@ -24,7 +24,5 @@ class SplashScreenActivity : AppCompatActivity() {
 
     companion object {
         private const val SPLASH_SCREEN_DELAY = 2000L
-
-        fun newIntent(context: Context) = Intent(context, SplashScreenActivity::class.java)
     }
 }

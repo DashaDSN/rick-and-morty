@@ -7,14 +7,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.andersen.domain.entities.filters.LocationFilter
 import com.andersen.presentation.R
-import com.andersen.presentation.di.Injector
-import com.andersen.presentation.feature.main.fragment.main.EpisodesFragment
-import com.andersen.presentation.feature.main.viewmodel.filter.LocationFilterViewModel
-import javax.inject.Inject
 
 class LocationsFilterFragment: Fragment(R.layout.fragment_location_filter) {
 
@@ -23,20 +17,8 @@ class LocationsFilterFragment: Fragment(R.layout.fragment_location_filter) {
     private lateinit var etDimension: EditText
     private lateinit var btnApply: Button
 
-    /*@Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private inline fun <reified T: ViewModel> getViewModel(): T = ViewModelProvider(this, viewModelFactory)[T::class.java]
-    private lateinit var viewModel: LocationFilterViewModel*/
-
     private lateinit var onClickListener: (locationFilter: LocationFilter) -> Unit
     private lateinit var filter: LocationFilter
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //Injector.plusMainActivityComponent().injectLocationsFilterFragment(this)
-        //viewModel = getViewModel()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,7 +36,6 @@ class LocationsFilterFragment: Fragment(R.layout.fragment_location_filter) {
             etName.text.toString(),
             etType.text.toString(),
             etDimension.text.toString())
-            //viewModel.saveFields(locationFilter)
             hideKeyboard()
             onClickListener(locationFilter)
         }

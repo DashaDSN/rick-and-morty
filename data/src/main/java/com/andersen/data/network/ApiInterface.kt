@@ -44,9 +44,6 @@ interface ApiInterface {
     @GET("episode/{ids}")
     suspend fun getEpisodesByIds(@Path("ids") ids: String): List<Episode>
 
-    /*@GET("locations/{ids}")
-    suspend fun getLocationsByIds(@Path("ids") ids: String): List<Location>*/
-
     @GET("character/{id}")
     suspend fun getCharacterById(@Path("id") id: Int): CharacterDetail
 

@@ -10,7 +10,6 @@ import com.andersen.presentation.feature.base.BaseFragment
 import com.andersen.presentation.feature.main.activities.detail.EpisodeDetailActivity
 import com.andersen.presentation.feature.main.adapters.EpisodesAdapter
 import com.andersen.presentation.feature.main.fragment.filter.EpisodesFilterFragment
-import com.andersen.presentation.feature.main.viewmodel.main.CharactersViewModel
 import com.andersen.presentation.feature.main.viewmodel.main.EpisodesViewModel
 
 class EpisodesFragment : BaseFragment<Episode>(R.layout.fragment_episodes) {

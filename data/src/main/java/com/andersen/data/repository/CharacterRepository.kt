@@ -36,18 +36,15 @@ class CharacterRepository @Inject constructor(
                 totalPages = response.info.pages
                 characterDao.deleteItems(response.results)
                 characterDao.insertItems(response.results)
-                //isItemsLoadedFromDB = false
                 Log.d(TAG, "Page $page of $totalPages loaded successfully")
                 emit(Result.Success(response.results))
             } catch (throwable: Throwable) {
                 totalPages = 1
                 val characters = characterDao.getItems(name, status, species, type, gender)
                 if (!characters.isNullOrEmpty()) {
-                    //isItemsLoadedFromDB = true
                     Log.d(TAG, "${characters.size} items loaded from database")
                     emit(Result.Success(characters))
                 } else {
-                    //isItemsLoadedFromDB = false
                     Log.d(TAG, "Error loading data! ${throwable.message}")
                     emit(Result.Error<List<Character>>(throwable.message ?: ""))
                 }
@@ -62,11 +59,11 @@ class CharacterRepository @Inject constructor(
                 val response = retrofit.getCharacterById(id)
                 characterDao.deleteDetailItem(response)
                 characterDao.insertDetailItem(response)
-                Log.d(TAG, "Character $id loaded successfully")
+                Log.d(TAG, "Item $id loaded successfully")
                 emit(Result.Success(response))
             } catch (throwable: Throwable) {
                 val character = characterDao.getDetailItemById(id)
-                Log.d(TAG, "Character $id loaded from database")
+                Log.d(TAG, "Item $id loaded from database")
                 emit(Result.Success(character))
             }
         }.flowOn(Dispatchers.IO)
@@ -82,7 +79,7 @@ class CharacterRepository @Inject constructor(
             try {
                 Log.d(TAG, ids.joinToString())
                 val response = retrofit.getCharactersByIds(ids.joinToString(","))
-                Log.d(TAG, "${response.size} episodes loaded successfully")
+                Log.d(TAG, "${response.size} items loaded successfully")
                 emit(Result.Success(response))
             } catch (throwable: Throwable) {
                 val characters = characterDao.getItemsByIds(ids)

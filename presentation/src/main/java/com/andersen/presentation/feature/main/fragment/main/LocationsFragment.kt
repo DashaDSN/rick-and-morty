@@ -10,7 +10,6 @@ import com.andersen.presentation.feature.base.BaseFragment
 import com.andersen.presentation.feature.main.activities.detail.LocationDetailActivity
 import com.andersen.presentation.feature.main.adapters.LocationsAdapter
 import com.andersen.presentation.feature.main.fragment.filter.LocationsFilterFragment
-import com.andersen.presentation.feature.main.viewmodel.main.CharactersViewModel
 import com.andersen.presentation.feature.main.viewmodel.main.LocationsViewModel
 
 class LocationsFragment : BaseFragment<Location>(R.layout.fragment_locations) {

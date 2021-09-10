@@ -1,7 +1,5 @@
 package com.andersen.domain.entities.filters
 
-import androidx.annotation.Dimension
-
 data class CharacterFilter (
     var name: String? = null,
     var status: String? = null,

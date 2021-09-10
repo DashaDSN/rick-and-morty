@@ -2,17 +2,15 @@ package com.andersen.presentation.feature.main.viewmodel.main
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.andersen.domain.entities.main.Character
 import com.andersen.domain.entities.Result
 import com.andersen.domain.entities.filters.CharacterFilter
+import com.andersen.domain.entities.main.Character
 import com.andersen.domain.interactors.ICharacterInteractor
-import com.andersen.presentation.di.ActivityScope
 import com.andersen.presentation.di.Injector
 import com.andersen.presentation.feature.base.ItemsViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 class CharactersViewModel  @Inject constructor(
     private val characterInteractor: ICharacterInteractor
@@ -24,12 +22,11 @@ class CharactersViewModel  @Inject constructor(
     private set
 
     init {
-        Log.d(TAG, "init - loadFirstPage()")
         loadFirstPage()
+
     }
 
    override fun loadFirstPage() {
-       //Log.d(TAG, "loadFirstPage()")
         viewModelScope.launch {
             page = 1
             characterInteractor.getAllCharacters(page++, searchString ?: filter.name, filter.status, filter.species, filter.type, filter.gender)?.collect {
@@ -40,16 +37,6 @@ class CharactersViewModel  @Inject constructor(
     }
 
     override fun loadNextPage() {
-        Log.d(TAG, "loadNextPage()")
-        /*Log.d(TAG, "loadNextPage: $page of ${repository.totalPages}")
-        if (page < repository.totalPages && (repository.isNetworkAvailable() || !repository.isItemsLoadedFromDB)) {
-            viewModelScope.launch {
-                (repository as CharacterRepository).getAllItems(page++).collect {
-                    if (it is Error) page--
-                    _itemsLiveData.value = it
-                }
-            }
-        }*/
         viewModelScope.launch {
             characterInteractor.getAllCharacters(page++, searchString ?: filter.name, filter.status, filter.species, filter.type, filter.gender)?.collect {
                 if (it is Result.Error && page > 1) page--
@@ -79,9 +66,7 @@ class CharactersViewModel  @Inject constructor(
     }
 
     override fun onCleared() {
-        Log.d(TAG, "onCleared(")
         super.onCleared()
-        //Injector.clearMainActivityComponent()
         Injector.clearCharactersFragmentComponent()
     }
 

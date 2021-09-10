@@ -18,12 +18,6 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
 
     protected inline fun <reified T: ViewModel> getViewModel(): T = ViewModelProvider(this, viewModelFactory)[T::class.java]
 
-    /*inline fun <reified T : ViewModel> Fragment.lazyViewModel(
-        noinline create: (detai) -> T
-    ) = viewModels<T> {
-        Factory(this, create)
-    }*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         injectViewModel()

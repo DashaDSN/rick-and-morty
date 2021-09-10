@@ -1,22 +1,17 @@
 package com.andersen.presentation.feature.main.viewmodel.detail
 
 import androidx.lifecycle.*
-import com.andersen.domain.entities.detail.EpisodeDetail
 import com.andersen.domain.entities.Result
-import com.andersen.domain.interactors.CharacterInteractor
-import com.andersen.domain.interactors.EpisodeInteractor
+import com.andersen.domain.entities.detail.EpisodeDetail
+import com.andersen.domain.entities.main.Character
 import com.andersen.domain.interactors.ICharacterInteractor
 import com.andersen.domain.interactors.IEpisodeInteractor
-import kotlinx.coroutines.flow.collect
-import javax.inject.Inject
-import com.andersen.domain.entities.main.Character
-import com.andersen.presentation.di.ActivityScope
 import com.andersen.presentation.di.Injector
 import com.andersen.presentation.feature.base.BaseViewModel
-import com.andersen.presentation.feature.main.di.DetailViewModelDependencies
+import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 class EpisodeDetailViewModel @Inject constructor(
-    //detailViewModelDependencies: DetailViewModelDependencies,
     episodeInteractor: IEpisodeInteractor,
     characterInteractor: ICharacterInteractor
 ) : BaseViewModel() {
@@ -31,12 +26,6 @@ class EpisodeDetailViewModel @Inject constructor(
             }
         }
     }
-    /*private val _episode: LiveData<Result<EpisodeDetail>> =
-        liveData {
-            episodeInteractor.getEpisodeDetailById(detailViewModelDependencies.itemId).collect { result ->
-                emit(result)
-            }
-        }*/
 
     val characters: LiveData<List<Character>> = _episode.distinctUntilChanged().switchMap {
         liveData {

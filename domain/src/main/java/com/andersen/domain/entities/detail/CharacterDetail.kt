@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 
-
 @Entity(tableName = "character_details")
 data class CharacterDetail(
     @PrimaryKey

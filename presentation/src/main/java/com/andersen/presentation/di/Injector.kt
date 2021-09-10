@@ -11,7 +11,6 @@ object Injector {
     lateinit var applicationComponent: ApplicationComponent
         private set
 
-    //private var mainActivityComponent: MainActivityComponent? = null
     private var charactersFragmentComponent: MainActivityComponent? = null
     private var episodesFragmentComponent: MainActivityComponent? = null
     private var locationsFragmentComponent: MainActivityComponent? = null
@@ -19,14 +18,6 @@ object Injector {
     private var characterDetailActivityComponent: DetailActivityComponent? = null
     private var episodeDetailActivityComponent: DetailActivityComponent? = null
     private var locationDetailActivityComponent: DetailActivityComponent? = null
-
-    /*fun plusMainActivityComponent(): MainActivityComponent {
-        if (mainActivityComponent == null) {
-            mainActivityComponent = applicationComponent.plusMainActivityComponent(MainActivityModule())
-        }
-
-        return mainActivityComponent!!
-    }*/
 
     fun plusCharactersFragmentComponent(): MainActivityComponent {
         if (charactersFragmentComponent == null) {
@@ -52,8 +43,6 @@ object Injector {
         return locationsFragmentComponent!!
     }
 
-
-
     fun plusCharacterDetailActivityComponent(): DetailActivityComponent {
         if (characterDetailActivityComponent == null) {
             characterDetailActivityComponent = applicationComponent.plusDetailActivityComponent(DetailActivityModule())
@@ -77,11 +66,6 @@ object Injector {
 
         return locationDetailActivityComponent!!
     }
-
-    /*fun clearMainActivityComponent() {
-        mainActivityComponent = null
-    }*/
-
 
     fun clearCharactersFragmentComponent() {
         charactersFragmentComponent = null

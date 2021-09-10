@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import java.lang.IllegalArgumentException
 import javax.inject.Inject
 import javax.inject.Provider
-import javax.inject.Singleton
 
 class ViewModelFactory @Inject constructor(
     private val viewModels: @JvmSuppressWildcards MutableMap<Class<out ViewModel>, Provider<ViewModel>>

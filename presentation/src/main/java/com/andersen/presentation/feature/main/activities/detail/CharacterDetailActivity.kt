@@ -6,11 +6,9 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andersen.domain.entities.Result
 import com.andersen.domain.entities.detail.CharacterDetail
@@ -19,10 +17,8 @@ import com.andersen.presentation.di.Injector
 import com.andersen.presentation.feature.base.BaseActivity
 import com.andersen.presentation.feature.main.adapters.EpisodesAdapter
 import com.andersen.presentation.feature.main.customview.TextViewWithLabel
-import com.andersen.presentation.feature.main.di.DetailViewModelDependencies
 import com.andersen.presentation.feature.main.viewmodel.detail.CharacterDetailViewModel
 import com.bumptech.glide.Glide
-import javax.inject.Inject
 
 class CharacterDetailActivity : BaseActivity<CharacterDetailViewModel>() {
 
@@ -43,7 +39,7 @@ class CharacterDetailActivity : BaseActivity<CharacterDetailViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_character_detail)
-        //initViewModel(
+
         initViews()
         subscribeUi()
         changeViewsVisibility()
@@ -59,17 +55,6 @@ class CharacterDetailActivity : BaseActivity<CharacterDetailViewModel>() {
         viewModel.setCharacterId(characterId)
     }
 
-    /*private fun initViewModel() {
-        val networkStateChecker = NetworkStateChecker(this)
-        val database = getDatabase(this)
-        val retrofit = ServiceBuilder.service
-        val repository = CharacterRepository(networkStateChecker, database.getCharacterDao(), database.getEpisodeDao(), retrofit)
-        viewModel = ViewModelProvider(this, CharacterViewModel.FACTORY(repository)).get(CharacterViewModel::class.java)
-
-        viewModel.getCharacterDetail(intent.getIntExtra(CHARACTER_ID_EXTRA, 0))
-        //Log.d("CharacterActivity", viewModel.character.value.toString())
-    }*/
-
     private fun initViews() {
         ivImage = findViewById(R.id.ivImage)
         tvName = findViewById(R.id.tvName)
@@ -83,15 +68,10 @@ class CharacterDetailActivity : BaseActivity<CharacterDetailViewModel>() {
         rvEpisodes = findViewById(R.id.rvEpisodes)
 
         adapter = EpisodesAdapter {
-            // intent = EpisodeDetailActivity.newIntent(this, it.id)
-            //startActivity(intent)
+            intent = EpisodeDetailActivity.newIntent(this, it.id)
+            startActivity(intent)
         }
-        val layoutManager = GridLayoutManager(this, 2)
-        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return adapter.getSpanSize(position)
-            }
-        }
+        val layoutManager = LinearLayoutManager(this)
 
         rvEpisodes.layoutManager = layoutManager
         rvEpisodes.adapter = adapter
@@ -133,13 +113,23 @@ class CharacterDetailActivity : BaseActivity<CharacterDetailViewModel>() {
 
     private fun setCharacter(character: CharacterDetail) {
         tvName.text = character.name
-        tvStatus.text = character.status ?: ""
-        tvSpecies.text = character.species ?: ""
-        tvType.text = character.type ?: ""
-        tvGender.text = character.gender ?: ""
-        tvOrigin.text = character.origin?.name ?: ""
-        tvLocation.text = character.location?.name ?: ""
-        //tvEpisodes.text = character.episodes.toString()
+        tvStatus.text = character.status
+        tvSpecies.text = character.species
+        tvType.text = character.type
+        tvGender.text = character.gender
+        tvOrigin.text = character.origin.name
+        tvLocation.text = character.location.name
+
+        tvOrigin.setOnClickListener {
+            val intent = LocationDetailActivity.newIntent(this, character.getOriginId())
+            startActivity(intent)
+        }
+
+        tvLocation.setOnClickListener {
+            val intent = LocationDetailActivity.newIntent(this, character.getLocationId())
+            startActivity(intent)
+        }
+
         Glide.with(this)
             .load(character.image)
             .placeholder(R.drawable.ic_character_black_24dp)

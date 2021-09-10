@@ -1,7 +1,5 @@
 package com.andersen.presentation.feature.main.fragment.filter
 
-import android.app.Activity
-import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.View
@@ -9,17 +7,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.andersen.domain.entities.filters.CharacterFilter
 import com.andersen.presentation.R
-import com.andersen.presentation.di.Injector
-
-import com.andersen.presentation.feature.main.viewmodel.main.CharactersViewModel
-import javax.inject.Inject
-
 
 class CharactersFilterFragment: Fragment(R.layout.fragment_character_filter) {
 
@@ -32,21 +22,6 @@ class CharactersFilterFragment: Fragment(R.layout.fragment_character_filter) {
 
     private lateinit var onClickListener: (characterFilter: CharacterFilter) -> Unit
     private lateinit var filter: CharacterFilter
-
-    /*@Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private inline fun <reified T : ViewModel> getViewModel(): T = ViewModelProvider(
-        this,
-        viewModelFactory
-    )[T::class.java]
-    private lateinit var viewModel: CharactersViewModel*/
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //Injector.plusMainActivityComponent().injectCharactersFilterFragment(this)
-        //viewModel = getViewModel()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,7 +59,6 @@ class CharactersFilterFragment: Fragment(R.layout.fragment_character_filter) {
                 etType.text.toString(),
                 genderText
             )
-            //viewModel.saveFields(characterFilter)
             hideKeyboard()
             onClickListener(characterFilter)
         }
@@ -93,7 +67,6 @@ class CharactersFilterFragment: Fragment(R.layout.fragment_character_filter) {
     private fun hideKeyboard() {
         val inputMethodManager = context?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
-
     }
 
     companion object {

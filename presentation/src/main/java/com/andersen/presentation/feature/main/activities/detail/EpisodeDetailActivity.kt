@@ -5,18 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.andersen.domain.entities.detail.EpisodeDetail
 import com.andersen.domain.entities.Result
+import com.andersen.domain.entities.detail.EpisodeDetail
 import com.andersen.presentation.R
 import com.andersen.presentation.di.Injector
 import com.andersen.presentation.feature.base.BaseActivity
 import com.andersen.presentation.feature.main.adapters.CharactersAdapter
 import com.andersen.presentation.feature.main.customview.TextViewWithLabel
-import com.andersen.presentation.feature.main.di.DetailViewModelDependencies
 import com.andersen.presentation.feature.main.viewmodel.detail.EpisodeDetailViewModel
 
 class EpisodeDetailActivity : BaseActivity<EpisodeDetailViewModel>() {
@@ -34,7 +32,6 @@ class EpisodeDetailActivity : BaseActivity<EpisodeDetailViewModel>() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_episode_detail)
 
-        //initViewModel()
         initViews()
         changeViewsVisibility()
         subscribeUi()
@@ -49,18 +46,6 @@ class EpisodeDetailActivity : BaseActivity<EpisodeDetailViewModel>() {
         viewModel = getViewModel()
         viewModel.setEpisodeId(episodeId)
     }
-
-
-    /*private fun initViewModel() {
-        val networkStateChecker = NetworkStateChecker(this)
-        val database = getDatabase(this)
-        val retrofit = ServiceBuilder.service
-        val repository = EpisodeRepository(networkStateChecker, database.getEpisodeDao(), database.getCharacterDao(), retrofit)
-        viewModel = ViewModelProvider(this, EpisodeViewModel.FACTORY(repository)).get(
-            EpisodeViewModel::class.java)
-
-        viewModel.getEpisodeDetail(intent.getIntExtra(EPISODE_ID_EXTRA, 0))
-    }*/
 
     private fun initViews() {
         tvName = findViewById(R.id.tvName)
@@ -116,13 +101,11 @@ class EpisodeDetailActivity : BaseActivity<EpisodeDetailViewModel>() {
         tvName.text = episode.name
         tvEpisode.text = episode.episode
         tvAirDate.text = episode.airDate
-        //tvCharacters.text = episode.characters.toString()
     }
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-
 
     companion object {
         private const val EPISODE_ID_EXTRA = "EPISODE_ID_EXTRA"

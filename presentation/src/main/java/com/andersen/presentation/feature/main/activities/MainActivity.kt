@@ -7,7 +7,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.andersen.presentation.R
-import com.andersen.presentation.di.Injector
 import com.andersen.presentation.feature.main.fragment.main.CharactersFragment
 import com.andersen.presentation.feature.main.fragment.main.EpisodesFragment
 import com.andersen.presentation.feature.main.fragment.main.LocationsFragment
@@ -15,16 +14,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    /*@Inject
-    protected lateinit var viewModelFactory: ViewModelProvider.Factory*/
-
     private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        //Injector.plusMainActivityComponent().inject(this)
 
         bottomNavigationView = findViewById(R.id.nav_view)
         bottomNavigationView.setOnItemSelectedListener { onItemSelectedListener(it) }
@@ -63,11 +57,6 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.fragment, fragment)
             commit()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //Injector.clearMainActivityComponent()
     }
 
     companion object {
