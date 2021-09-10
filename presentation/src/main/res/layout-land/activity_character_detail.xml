@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/large_padding">
+
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="@dimen/base_image_size"
+            android:layout_height="@dimen/base_image_size"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/small_margin"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/splash_screen_rick_and_morty"
+            android:contentDescription="@string/character_image" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginBottom="@dimen/large_margin"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/large_text_size"
+            tools:text="Name" />
+
+        <com.andersen.presentation.feature.main.customview.TextViewWithLabel
+            android:id="@+id/tvStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/small_text_size"
+            app:label="@string/character_status"
+            tools:text="@string/character_status" />
+
+        <com.andersen.presentation.feature.main.customview.TextViewWithLabel
+            android:id="@+id/tvSpecies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/base_text_size"
+            app:label="@string/character_species"
+            tools:text="@string/character_species" />
+
+        <com.andersen.presentation.feature.main.customview.TextViewWithLabel
+            android:id="@+id/tvType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/base_text_size"
+            app:label="@string/character_type"
+            tools:text="@string/character_type" />
+
+        <com.andersen.presentation.feature.main.customview.TextViewWithLabel
+            android:id="@+id/tvGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/base_text_size"
+            app:label="@string/character_gender"
+            tools:text="@string/character_gender" />
+
+        <com.andersen.presentation.feature.main.customview.TextViewWithLabel
+            android:id="@+id/tvOrigin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/base_text_size"
+            app:label="@string/character_origin"
+            tools:text="@string/character_origin" />
+
+        <com.andersen.presentation.feature.main.customview.TextViewWithLabel
+            android:id="@+id/tvLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/base_text_size"
+            app:label="@string/character_location"
+            tools:text="@string/character_location" />
+
+        <TextView
+            android:id="@+id/tvEpisodes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/base_text_size"
+            android:textStyle="italic"
+            android:text="@string/character_episodes" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvEpisodes"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="@dimen/base_text_size"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:spanCount="2"
+            tools:listitem="@layout/layout_episode_item"/>
+    </LinearLayout>
+</ScrollView>

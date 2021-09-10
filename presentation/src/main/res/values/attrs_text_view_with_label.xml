@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="TextViewWithLabel">
+        <attr name="label" format="string"/>
+        <attr name="text" format="string" />
+    </declare-styleable>
+</resources>
